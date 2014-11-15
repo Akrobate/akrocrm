@@ -1,6 +1,5 @@
-<?
+<?php
 
-//$fields['Contacts']
 $fields['nom']['typeSQL'] = 'VARCHAR(255)';
 $fields['nom']['type'] = 'text';
 $fields['nom']['label'] = 'Nom';
