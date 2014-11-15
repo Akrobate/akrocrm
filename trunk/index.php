@@ -1,9 +1,10 @@
 <?php
 
 	session_start();
+	
 	error_reporting(15);
 	require_once("./api.php");
-	error_reporting(15);
+	
 	$controller = request::get("controller");
 	$action = request::get("action");
 
@@ -20,4 +21,9 @@
 
 	$main->assign('content', $ctr);
 	$main->render();
+
+
+
+
+
 

@@ -11,7 +11,16 @@ class CoreController {
 	public $data;
 
 	public function __construct() {
-		$this->template = "core/views/controller.php";
+		$this->autoloadTemplate();
+	}
+
+
+	public function autoloadTemplate() {
+	
+		$classname = get_class($this);
+		$exp = explode("_", strtolower($classname));
+		$str = implode("/", $exp);
+		$this->template = PATH_CORE_VIEWS . $str . ".php";
 	}
 
 
@@ -55,6 +64,9 @@ class CoreController {
 	public function render() {
 		$this->preinit();
 		$this->init();
+		$classname = get_class($this);
+		echo("Classname: " . $classname . " - " . $this->template);
+		
 		if (count($this->data)){
 			extract($this->data);
 		}
@@ -64,7 +76,7 @@ class CoreController {
 
 	public function renderSTR() {
 		$this->preinit();
-		$this->init();	
+		$this->init();
 		ob_start();
 		if (count($this->data)){
 			extract($this->data);
@@ -80,11 +92,5 @@ class CoreController {
 		$to->setAction($from->action);
 		$to->setModule($from->module);	
 	}
-
-
-
-
-
-
 
 }

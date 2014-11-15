@@ -8,7 +8,7 @@ sql::display(1);
 
 
 foreach($dirs as $dir) {
-	if(($dir != "..") && ($dir != ".")) {
+	if(($dir != "..") && ($dir != ".")&& ((strpos($dir, ".") === false))) {
 
 		if (sql::tableExists($dir)) {
 			sql::removeTable($dir);
@@ -30,7 +30,7 @@ foreach($dirs as $dir) {
 if (in_array("--people", $argv)) {
 	
 	foreach($dirs as $dir) {
-		if(($dir != "..") && ($dir != ".")) {
+		if(($dir != "..") && ($dir != ".") && ((strpos($dir, ".") === false)) ) {
 
 			if (sql::tableExists($dir)) {
 				unset($fields);

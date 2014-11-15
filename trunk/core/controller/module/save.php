@@ -1,55 +1,50 @@
 <?php
 
-
-
-class Edit extends CoreController {
+class Module_Save extends CoreController {
 
 	public function __construct() {
-		$this->template = "core/views/edit.php";
+		$this->template = "core/views/module/edit.php";
 	}
 
 	public function init() {
 	
 		$id = request::get('id');
-		
+
+		$orm = new OrmNode();		
 		$fields = OrmNode::getFieldsFor($this->getModule());
-		//$fields = "mega test";
 		
 		$data = array();
-		$orm = new OrmNode();
+
+		foreach($fields as $fieldname=>$field) {
+			$data[$fieldname] = request::get($fieldname);
+		}
 		
-		//echo("<h1>ICI<br>ICI</h1>");
+		$allFields = array_keys($fields);
+		$allFields[] = 'id';
+		$data['id'] = $id;
+		
+		$rez = $orm->upsert($this->getModule(), $allFields, $data);		
 		$content = $orm->getData($this->getModule(), $id);
-		//print_r($content);
 		
-		// creation de tous les objets
+		$data = array();
+		
 		foreach($fields as $fieldname=>$field) {
 		
 			if ($field['type'] == 'text') {
 			
 				unset($obj);
-				$obj = new FieldText();
+				$obj = new Field_Text();
 				$obj->setAction('edit');
 				$obj->setValue($content[$fieldname]);
 				$obj->setName($fieldname);
 				$obj->setLabel($field['label']);
 				$data[] = $obj->renderSTR();
-			
+				
 			}
 			
 		}
-		
-		//$this->assign('data', $fields);
+
 		$this->assign('fields', $data);
 		$this->assign('id', $id);
 	}
-
-
-
-
-
-
-
-
-
 }
