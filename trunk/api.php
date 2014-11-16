@@ -19,6 +19,8 @@
 	include(PATH_LIBS . "OrmNode.class.php");
 	include(PATH_LIBS . "helper.class.php");	
 	include(PATH_LIBS . "core.controller.class.php");
+	include(PATH_LIBS . "modulemanager.class.php");
+	
 	
 	spl_autoload_register(function ($class) {
 		// core class

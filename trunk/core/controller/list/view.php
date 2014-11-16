@@ -3,17 +3,17 @@
 class List_View extends CoreController {
 
 	public function init() {
-		$orm = new OrmNode();		
+		$orm = new OrmNode();
 		
 		$listFields = $this->getListFields();
+		$orm->setFilter($this->filter);
+		$content = $orm->getAllDataWithJoins($this->getModule(), $listFields);
+
 		
-		$content = $orm->getAllData($this->getModule(), $listFields);	
-	
 		$result = array();
 	
 		foreach($content as $cntk => $cnt) {
-			$tmp = OrmNode::dataFieldsAdapter($cnt, $listFields, 'list', 'rendered');
-			$result[] = $tmp;
+			$result[] = OrmNode::dataFieldsAdapter($cnt, $listFields, 'list', 'rendered');
 		}
 		$this->assign('datas', $result);		
 	}
@@ -24,11 +24,13 @@ class List_View extends CoreController {
 		$fields['id'] = "id";
 		return $fields;		
 	}
-	
-	
-//	public function 
-	
-	
-	
+
+
+
+	public function setFilter($filter) {
+		$this->filter = $filter;	
+		
+	}
+
 	
 }

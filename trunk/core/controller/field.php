@@ -7,6 +7,8 @@ class Field extends CoreController{
 	public $value;
 	public $label;	
 	
+	public $field_params;
+	
 	public function setValue($value) {
 		$this->value = $value;	
 	}
@@ -17,6 +19,13 @@ class Field extends CoreController{
 
 	public function setLabel($label) {
 		$this->label = $label;	
+	}
+
+	public function setAllFieldsParams($fieldname, $params) {
+		$this->field_params = $params;
+		$this->setName($fieldname);
+		$this->setLabel($params['label']);
+	
 	}
 
 	public function getName() {
