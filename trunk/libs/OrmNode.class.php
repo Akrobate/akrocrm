@@ -4,7 +4,7 @@ class OrmNode {
 
 	public static $joins = array();
 
-	public static $allowedfields = array('text', 'join');
+	public static $allowedfields = array('text', 'join', 'largetext');
 
 	public $filter;
 	

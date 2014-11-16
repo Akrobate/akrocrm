@@ -10,7 +10,10 @@ class url {
 		self::$rewrited = $bool;
 	}
 
-
+	static function redirect($controller, $action, $id = null, $other_params = null){
+		$querystr = self::internal($controller, $action, $id, $other_params);
+		header("Location: index.php" . $querystr);
+	}
 
 	static function internal($controller, $action, $id = null, $other_params = null) {
 		if (self::$rewrited) {

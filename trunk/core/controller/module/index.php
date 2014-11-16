@@ -11,7 +11,8 @@ class Module_Index extends CoreController {
 		CoreController::share($this, $list);
 		$listContent = $list->renderSTR();
 
-		$this->assign('listContent', $listContent);		
-		
+		$this->assign('listContent', $listContent);
+		$this->assign('mainmodule', ucfirst($this->getModule()));		
+
 	}
 }

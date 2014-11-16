@@ -5,7 +5,12 @@
 		public function init() {
 	
 			$id = request::get('id');
-			$fields = OrmNode::getFieldsFor($this->getModule());
+			
+			$this->assign('id', $id);
+			$mainmodule = $this->getModule();
+			$this->assign('mainmodule', ucfirst($mainmodule));
+			
+			$fields = OrmNode::getFieldsFor($mainmodule);
 			$data = array();
 			$orm = new OrmNode();
 			$content = $orm->getData($this->getModule(), $id);
@@ -22,7 +27,7 @@
 					$listobj->setFilter($key . " = " . $id);
 					$listobj->setModule($modulename);
 					$listobj->setAction('view');
-					$lists[] = $listobj->renderSTR();		
+					$lists[] = array('content'=>$listobj->renderSTR(), 'title'=> ucfirst($modulename));
 				}
 			}
 			$this->assign('sublists', $lists);
