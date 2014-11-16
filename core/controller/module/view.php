@@ -9,21 +9,22 @@
 			$data = array();
 			$orm = new OrmNode();
 			$content = $orm->getData($this->getModule(), $id);
-
-			$this->autoloadTemplate();
-
-
-			foreach($fields as $fieldname=>$field) {
-				if ($field['type'] == 'text') {
-					unset($obj);
-					$obj = new Field_Text();
-					$obj->setAction('view');
-					$obj->setValue($content[$fieldname]);
-					$obj->setName($fieldname);
-					$obj->setLabel($field['label']);
-					$data[] = $obj->renderSTR();
-				}	
-			}
+			$data = OrmNode::dataFieldsAdapter($content, $fields, 'view', 'rendered');		
 			$this->assign('fields', $data);
+			
+			// On recupere les subpannels
+			$modulesjoins = ModuleManager::getJoinsOnModule($this->getModule());
+			$lists = array();
+		
+			foreach ($modulesjoins as $modulename=>$module) {
+				foreach($module as $key=>$val) {
+					$listobj = new List_View();
+					$listobj->setFilter($key . " = " . $id);
+					$listobj->setModule($modulename);
+					$listobj->setAction('view');
+					$lists[] = $listobj->renderSTR();		
+				}
+			}
+			$this->assign('sublists', $lists);
 		}
 	}

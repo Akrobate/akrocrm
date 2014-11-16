@@ -4,8 +4,15 @@ class OrmNode {
 
 	public static $joins = array();
 
-	public static $allowedfields = array('text');
+	public static $allowedfields = array('text', 'join');
 
+	public $filter;
+	
+	public function setFilter($filter) {
+	
+		$this->filter = $filter;
+	
+	}
 
 	public static function getFieldsFor($module) {
 		if (!empty($module)){
@@ -29,32 +36,34 @@ class OrmNode {
 		return $allFields;
 	}
 
+	/**
+	 * 
+	 */
 
 
 	public static function dataFieldsAdapter($data, $fieldslist, $fieldaction = 'view', $rendered = false){
 		$ret = array();
 		foreach($data as $field => $value) {
-			$type = $fieldslist[$field]['type'];
+			if (isset($fieldslist[$field])) {
+				$type = $fieldslist[$field]['type'];
 			
-			if (in_array($type, self::$allowedfields)) {
-				$typename = ucfirst($type);
-				$classname = "Field_".$typename;
-				$obj = new $classname();
-			} else {
-				$obj = new Field_Text();
+				if (in_array($type, self::$allowedfields)) {
+					$typename = ucfirst($type);
+					$classname = "Field_".$typename;
+					$obj = new $classname();
+				} else {
+					$obj = new Field_Text();
+				}
+			
+				$obj->setAllFieldsParams($field, $fieldslist[$field]);
+				$obj->setValue($value);	
+				$obj->setAction($fieldaction);
+				if ($rendered == 'rendered') {
+					$ret[$field] = $obj->renderSTR();
+				} else {
+					$ret[$field] = $obj;
+				}
 			}
-			
-			$label = $fieldslist[$field]['label'];
-			$obj->setName($field);
-			$obj->setValue($value);	
-			$obj->setAction($fieldaction);
-			$obj->setLabel($label);
-			if ($rendered == 'rendered') {
-				$ret[$field] = $obj->renderSTR();
-			} else {
-				$ret[$field] = $obj;
-			}
-			
 		}
 		return $ret;	
 	}
@@ -72,35 +81,33 @@ class OrmNode {
 	}
 
 
-
-
-	public static function getDataWithJoins($module, $id) {	
-
-		$joins = "";
-		
-		foreach(self::$joins as $join) {
-			$joins .= " LEFT JOIN ".$join['table']." ON $module.id = id_" . $join['table'] . " ";
-		}
-		$query = "SELECT * FROM $module $joins WHERE id = $id";
-		sql::query($query);
-		$data = sql::allFetchArray();
-		return $data[0];
-	}
-
-
-
 	public static function addJoin($table) {
 		self::$joins = $table;
 	}
 
 
-	public static function getAllDataWithJoins($module, $fields = array()) {
-	
-		$joins = "";
-		foreach(self::$joins as $join) {
-			$joins .= " LEFT JOIN ".$join['table']." ON $module.id = id_" . $join['table'] . " ";
+	public function getAllDataWithJoins($module, $listFields = array()) {
+		
+		$content = $this->getAllData($module, $listFields);	
+		$joins_data = array();
+		foreach($listFields as $jname=>$join) {
+			if ($join['type'] == 'join') {
+				$join_module = $join['join']['table'];
+				$joins_data[$jname] = $this->getJoinData($join_module, $this->getFieldListFromDataSet($content, $jname));
+				$this->glueJoinDataToData($content, $joins_data[$jname], $jname);
+			}
 		}
-		$query = "SELECT * FROM $module $joins WHERE 1";
+		return $content;
+	}
+
+
+	public function getAllData($module, $fields = array()) {
+	
+		if (isset($this->filter) && $this->filter != '') {
+			$query = "SELECT * FROM $module WHERE " . $this->filter;
+		} else {
+			$query = "SELECT * FROM $module WHERE 1";		
+		}
 		sql::query($query);
 		$data_origin = sql::allFetchArray();
 		$data_to = array();
@@ -115,21 +122,44 @@ class OrmNode {
 	}
 
 
-	public static function getAllData($module, $fields = array()) {
-	
-		$query = "SELECT * FROM $module WHERE 1";
+	public static function getJoinData($module, $id = array() ) {
+		$query = "SELECT * FROM $module WHERE id IN (";
+		$query .= implode(',', $id) ;
+		$query .= ");";
 		sql::query($query);
-		$data_origin = sql::allFetchArray();
-		$data_to = array();
-		foreach($data_origin as $data) {
-			$tmp = array();			
-			foreach ($fields as $fieldname=>$field) {
-				$tmp[$fieldname] = $data[$fieldname];
-			}		
-			$data_to[] = $tmp;
+		$data = sql::allFetchArray();
+		
+		$data2 = array();
+		
+		foreach($data as $d) {
+			$data2[ $d['id'] ] = $d;
 		}
-		return $data_to;
+		return $data2;
 	}
+	
+	
+	
+	public static function getFieldListFromDataSet($data, $field) {
+		$ret = array();
+		foreach($data as $d) {
+			$ret[$d[$field]] = $d[$field];
+		}
+
+		return $ret;
+	}
+	
+	public static function glueJoinDataToData(&$data, $joindata, $field) {
+
+		foreach($data as &$d) {
+
+			if ($d[$field]){
+				$d[$field] = $joindata[ $d[$field] ];
+			} 
+		}
+
+		return $data;
+	}
+
 
 
 	public function upsert($module, $fields, $data) {
