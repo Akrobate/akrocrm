@@ -2,6 +2,11 @@
 
 class OrmNode {
 
+	public static $joins = array();
+
+	public static $allowedfields = array('text');
+
+
 	public static function getFieldsFor($module) {
 		if (!empty($module)){
 			include("modules/$module/fields.php");
@@ -25,6 +30,38 @@ class OrmNode {
 	}
 
 
+
+	public static function dataFieldsAdapter($data, $fieldslist, $fieldaction = 'view', $rendered = false){
+		$ret = array();
+		foreach($data as $field => $value) {
+			$type = $fieldslist[$field]['type'];
+			
+			if (in_array($type, self::$allowedfields)) {
+				$typename = ucfirst($type);
+				$classname = "Field_".$typename;
+				$obj = new $classname();
+			} else {
+				$obj = new Field_Text();
+			}
+			
+			$label = $fieldslist[$field]['label'];
+			$obj->setName($field);
+			$obj->setValue($value);	
+			$obj->setAction($fieldaction);
+			$obj->setLabel($label);
+			if ($rendered == 'rendered') {
+				$ret[$field] = $obj->renderSTR();
+			} else {
+				$ret[$field] = $obj;
+			}
+			
+		}
+		return $ret;	
+	}
+
+
+
+
 	public static function getData($module, $id) {
 	
 		$query = "SELECT * FROM $module WHERE id = $id";
@@ -32,6 +69,49 @@ class OrmNode {
 		$data = sql::allFetchArray();
 		return $data[0];
 		
+	}
+
+
+
+
+	public static function getDataWithJoins($module, $id) {	
+
+		$joins = "";
+		
+		foreach(self::$joins as $join) {
+			$joins .= " LEFT JOIN ".$join['table']." ON $module.id = id_" . $join['table'] . " ";
+		}
+		$query = "SELECT * FROM $module $joins WHERE id = $id";
+		sql::query($query);
+		$data = sql::allFetchArray();
+		return $data[0];
+	}
+
+
+
+	public static function addJoin($table) {
+		self::$joins = $table;
+	}
+
+
+	public static function getAllDataWithJoins($module, $fields = array()) {
+	
+		$joins = "";
+		foreach(self::$joins as $join) {
+			$joins .= " LEFT JOIN ".$join['table']." ON $module.id = id_" . $join['table'] . " ";
+		}
+		$query = "SELECT * FROM $module $joins WHERE 1";
+		sql::query($query);
+		$data_origin = sql::allFetchArray();
+		$data_to = array();
+		foreach($data_origin as $data) {
+			$tmp = array();			
+			foreach ($fields as $fieldname=>$field) {
+				$tmp[$fieldname] = $data[$fieldname];
+			}		
+			$data_to[] = $tmp;
+		}
+		return $data_to;
 	}
 
 

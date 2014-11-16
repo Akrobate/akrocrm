@@ -6,14 +6,12 @@ class Module_Index extends CoreController {
 	
 		$id = request::get('id');
 		$modules = $this->getModule();
+		
+		$list = new List_View();
+		CoreController::share($this, $list);
+		$listContent = $list->renderSTR();
 
-		$fields = OrmNode::getFieldsFor($this->getModule());	
+		$this->assign('listContent', $listContent);		
 		
-		$data = array();
-		$orm = new OrmNode();
-		$fields['id']['type'] = "int";
-		$content = $orm->getAllData($this->getModule(), $fields);
-		
-		$this->assign('datas', $content);
 	}
 }
