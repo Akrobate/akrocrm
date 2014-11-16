@@ -25,7 +25,7 @@
     </nav>
 
     <div class="container-fluid">
-      <div class="row" style="margin-top: 60px;">
+      <div class="row" style="margin-top: 20px;">
           	<div class="col-md-3">
     		 	<?=$left?>
     		 </div>
