@@ -65,7 +65,7 @@ class CoreController {
 		$this->preinit();
 		$this->init();
 		$classname = get_class($this);
-		echo("Classname: " . $classname . " - " . $this->template);
+		//echo("Classname: " . $classname . " - " . $this->template);
 		
 		if (count($this->data)){
 			extract($this->data);
