@@ -18,6 +18,10 @@ class Controller extends CoreController {
 		$allModules = ModuleManager::getAllModules();
 		$this->assign('topLinks', $allModules);
 	
+		$obj = new Sidebar_View();
+		$obj->setModulesList($allModules);
+		$this->assign('left', $obj->renderSTR());
+	
 	}
 
 }

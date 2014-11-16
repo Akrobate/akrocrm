@@ -9,9 +9,7 @@ class List_Frameview extends CoreController {
 		CoreController::share($this, $list);
 		$listContent = $list->renderSTR();
 		$this->assign('list', $listContent);		
-		
-		
-		$this->assign('mainmodule', ucfirst($this->getModule()));		
+		$this->assign('mainmodule', ucfirst($modules));		
 	}
 		
 }

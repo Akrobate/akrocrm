@@ -1,3 +1,9 @@
+<div class="page-header">
+	<h2>
+		<?=ucfirst($this->getModule())?>
+	</h2>
+</div>
+
 <form method="post" action="<?=url::internal($this->getModule(),'save')?>">
 
 	<? //print_r($fields); ?>
