@@ -2,14 +2,9 @@
 
 class Module_Save extends CoreController {
 
-	public function __construct() {
-		$this->template = "core/views/module/edit.php";
-	}
-
 	public function init() {
 	
 		$id = request::get('id');
-
 		$orm = new OrmNode();		
 		$fields = OrmNode::getFieldsFor($this->getModule());
 		
@@ -23,28 +18,8 @@ class Module_Save extends CoreController {
 		$allFields[] = 'id';
 		$data['id'] = $id;
 		
-		$rez = $orm->upsert($this->getModule(), $allFields, $data);		
-		$content = $orm->getData($this->getModule(), $id);
+		$rez = $orm->upsert($this->getModule(), $allFields, $data);	
 		
-		$data = array();
-		
-		foreach($fields as $fieldname=>$field) {
-		
-			if ($field['type'] == 'text') {
-			
-				unset($obj);
-				$obj = new Field_Text();
-				$obj->setAction('edit');
-				$obj->setValue($content[$fieldname]);
-				$obj->setName($fieldname);
-				$obj->setLabel($field['label']);
-				$data[] = $obj->renderSTR();
-				
-			}
-			
-		}
-
-		$this->assign('fields', $data);
-		$this->assign('id', $id);
+		url::redirect($this->getModule(), 'view', $id);	
 	}
 }

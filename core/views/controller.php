@@ -1,4 +1,3 @@
-
 	<nav class="navbar navbar-inverse navbar-fixed-top" role="navigation">
       <div class="container-fluid">
         <div class="navbar-header">
@@ -12,10 +11,11 @@
         </div>
         <div id="navbar" class="navbar-collapse collapse">
           <ul class="nav navbar-nav navbar-right">
-            <li><a href="#">Dashboard</a></li>
-            <li><a href="#">Settings</a></li>
-            <li><a href="#">Profile</a></li>
-            <li><a href="#">Help</a></li>
+           
+           <?foreach ($topLinks as $module) : ?>
+	            <li><a href="<?=url::internal($module,'index')?>"><?=ucfirst($module)?></a></li>
+           <? endforeach; ?>
+           
           </ul>
           <form class="navbar-form navbar-right">
             <input type="text" class="form-control" placeholder="Search...">

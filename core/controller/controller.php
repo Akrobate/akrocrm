@@ -13,6 +13,10 @@ class Controller extends CoreController {
 			CoreController::share($this, $obj);
 			$this->assign('right', $obj->renderSTR());
 		}
+		
+		
+		$allModules = ModuleManager::getAllModules();
+		$this->assign('topLinks', $allModules);
 	
 	}
 

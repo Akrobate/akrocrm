@@ -76,7 +76,11 @@ class sql {
 			 	if ($val['type'] == 'join') {
 					 $query .= " $fieldname " . $val['typeSQL'] . " NOT NULL, ";
 			 	} else if ($val['type'] == 'date') {	 
-				 	$query .= " $fieldname " . $val['type'] . " NOT NULL, ";
+				 	$query .= " $fieldname " . $val['typeSQL'] . " NOT NULL, ";
+				 } else if ($val['type'] == 'largetext') {	 
+				 	$query .= " $fieldname " . $val['typeSQL'] . " NOT NULL, ";
+				 } else if ($val['type'] == 'text') {	 
+				 	$query .= " $fieldname " . $val['typeSQL'] . " NOT NULL, ";
 				 } else {
 				 	$query .= " $fieldname " . $val['type'] . " NOT NULL, ";
 				 }

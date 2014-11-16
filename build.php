@@ -7,6 +7,9 @@ $tree = array();
 sql::display(1);
 
 
+$nbr_items_per_table = 50;
+
+
 foreach($dirs as $dir) {
 	if(($dir != "..") && ($dir != ".")&& ((strpos($dir, ".") === false))) {
 
@@ -37,7 +40,7 @@ if (in_array("--people", $argv)) {
 				$toinclude = PATH_MODULES . $dir . "/"."fields.php";
 				include($toinclude);
 				
-				for($j = 0; $j < 50; $j++) {
+				for($j = 0; $j < $nbr_items_per_table; $j++) {
 					$data = sql::peopleTable($dir, $fields);
 					
 					// print_r($data);
@@ -53,5 +56,54 @@ if (in_array("--people", $argv)) {
 		
 		}
 	}
+	
+	
+	// People joins	
+	
+	$dirs =  ModuleManager::getAllModules();
+	foreach($dirs as $dir) {
+	
+	
+		$fields = OrmNode::getFieldsFor($dir);
+		foreach ($fields as $name => $field) {
+		
+			if ($field['type'] == 'join') {
+				
+				$joinmodule = $field['join']['table'];
+				$orm = new OrmNode();
+				$alldata = $orm->getAllData($joinmodule, array('id'=>'id'));
+				$ids = OrmNode::getFieldListFromDataSet($alldata);
+				
+				
+				
+				foreach($alldata as $d) {
+				
+					$randjoin = rand(1, $nbr_items_per_table);
+					//print_r($randjoin);
+					$fields1 = OrmNode::getFieldsFor($dir);
+					
+					$data = array();
+
+					$data[$name] = $randjoin;
+	
+					$allFields = array();
+					$allFields[] = $name;
+					$allFields[] = 'id';
+					$data['id'] = $d['id'];
+						
+					//print_r ($data);
+					//exit();
+						
+						
+					$rez = $orm->upsert($dir, $allFields, $data);
+					
+				}
+				
+			}
+		}
+	}
+	
+	
+	
 
 }
