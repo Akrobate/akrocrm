@@ -14,3 +14,6 @@ $fields['id_entreprise']['label'] = 'Entreprise';
 $fields['id_entreprise']['join']['table'] = 'entreprises';
 $fields['id_entreprise']['join']['field'] = 'nom';
 $fields['id_entreprise']['join']['type'] = '1-n';
+
+
+
