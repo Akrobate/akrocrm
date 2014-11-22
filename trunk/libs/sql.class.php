@@ -69,6 +69,7 @@ class sql {
 
 
 	public static function createTable($name, $params = array()) {
+	
 		if (!empty($name)) {
 			$query = "CREATE TABLE IF NOT EXISTS ". $name ." (id mediumint(9) NOT NULL AUTO_INCREMENT, ";
 			  
@@ -82,11 +83,11 @@ class sql {
 				 } else if ($val['type'] == 'text') {	 
 				 	$query .= " $fieldname " . $val['typeSQL'] . " NOT NULL, ";
 				 } else {
-				 	$query .= " $fieldname " . $val['type'] . " NOT NULL, ";
+				 	$query .= " $fieldname " . $val['typeSQL'] . " NOT NULL, ";
 				 }
 			 }
 			  
-			 $query .= " PRIMARY KEY (id)) ENGINE=MyISAM DEFAULT CHARSET=latin1 AUTO_INCREMENT=1 ; ";
+			 $query .= " PRIMARY KEY (id)) ENGINE=MyISAM DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ; ";
 			 self::query($query);
 
 			if (self::$display) {
@@ -188,6 +189,39 @@ class sql {
 
 	public static function display($var) {	
 		self::$display = $var;
+	}
+
+
+
+
+
+
+
+	public static function peopleTableContacts($name, $params = array()) {
+
+		$str = file_get_contents("http://api.randomuser.me/");
+		$obj = json_decode($str);
+		$user = $obj->results[0]->user;
+		
+		if (!empty($name)) {
+			$value = "";  
+			$data = array();
+			foreach( $params as $fieldname => $val ) {
+				$data[$fieldname] = $value;		
+			}
+		}
+			  
+		$data['nom'] = ucfirst($user->name->last);
+		$data['prenom'] = ucfirst($user->name->first);		
+		$data['email'] = $user->email;
+		$data['adresse'] = $user->location->street;
+		$data['ville'] = $user->location->city;
+		$data['cp'] = $user->location->zip;
+		$data['telephone'] = $user->phone;  
+		
+		$data['photo'] = $user->picture->large;
+		
+		return $data;		
 	}
 
 }

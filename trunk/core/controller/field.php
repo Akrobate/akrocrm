@@ -53,6 +53,8 @@ class Field extends CoreController{
 	}
 
 	
+	/* Non finalisé */
+	
 	
 	public function isJoin() {
 		
@@ -67,16 +69,7 @@ class Field extends CoreController{
 		
 		
 		if ($nb_exoplode > 1) {
-			/*foreach($explode as $ex) {
-				if ($ex == "id") {
-					sql::tableExists();		
-				} else if (in_array($ex, sql::tableExists($ex))) { // ne foctonne pas c sur
-					
-				}
-				
-			}		*/	
-				
-				
+		
 			if ($explode[0] == 'id' && in_array($explode[1], $mudules)) {
 			
 			}			

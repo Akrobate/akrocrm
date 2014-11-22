@@ -4,7 +4,7 @@ class OrmNode {
 
 	public static $joins = array();
 
-	public static $allowedfields = array('text', 'join', 'largetext');
+	public static $allowedfields = array('text', 'join', 'largetext', 'photourl');
 
 	public $filter;
 	
@@ -144,7 +144,7 @@ class OrmNode {
 		foreach($data as $d) {
 			$ret[$d[$field]] = $d[$field];
 		}
-
+		print_r($ret);
 		return $ret;
 	}
 	
@@ -184,7 +184,8 @@ class OrmNode {
 			$data_string = substr($data_string, 0, -1);
 		
 			$query = 'UPDATE ' . $module . ' SET '. $data_string . ' WHERE id=' . $data['id'];	
-			sql::query(utf8_decode($query));		
+//			sql::query(utf8_decode($query));
+			sql::query($query);		
 			$response['msg'] = 'EDITED';
 			$response['id'] = $data['id'];
 			$response['query'] = $query;
@@ -192,7 +193,8 @@ class OrmNode {
 		} else {
 			$data_string = implode(',',$data_string_array);
 			$query = 'INSERT INTO ' . $module . ' ('.$fields_string.') VALUES ('. $data_string .');';
-			sql::query(utf8_decode($query));
+			//sql::query(utf8_decode($query));
+			sql::query($query);			
 			$lastid = sql::lastId();
 			$response['msg'] = 'ADDED';
 			$response['id'] = $lastid;
