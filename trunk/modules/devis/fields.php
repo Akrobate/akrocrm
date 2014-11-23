@@ -8,6 +8,11 @@ $fields['prix']['typeSQL'] = 'VARCHAR(255)';
 $fields['prix']['type'] = 'text';
 $fields['prix']['label'] = 'Prix du devis';
 
+$fields['heure']['typeSQL'] = 'TIME';
+$fields['heure']['type'] = 'time';
+$fields['heure']['label'] = 'Heure';
+
+
 $fields['id_entreprise']['type'] = 'join';
 $fields['id_entreprise']['typeSQL'] = 'INT(11)';
 $fields['id_entreprise']['label'] = 'Entreprise';

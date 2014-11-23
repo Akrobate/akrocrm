@@ -1,6 +1,6 @@
 <?php
 
-class Field_Date extends Field {
+class Field_Time extends Field {
 	
 	public function init() {
 		parent::init();

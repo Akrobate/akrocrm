@@ -27,6 +27,7 @@ class Controller extends CoreController {
 		}
 		
 		
+		
 		$allModules = ModuleManager::getAllModules();
 		$this->assign('topLinks', $allModules);
 	
