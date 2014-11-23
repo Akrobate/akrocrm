@@ -7,8 +7,20 @@ class Controller extends CoreController {
 	
 		if ($this->action != "") {
 			$action = $this->action;
-			$ctrName = ucfirst($action);
-			$ctrName = 'Module_' . $ctrName;
+			$module = $this->module;
+
+			$moduleName = ucfirst($module);			
+			$actionName = ucfirst($action);
+			
+			$customName = 'Module_' . $moduleName . '_' . $actionName;
+			$coreName = 'Module_' . $actionName;
+			
+			if (CoreController::controllerExists($customName)) {
+				$ctrName = $customName;
+			} elseif(CoreController::controllerExists($coreName)) {
+				$ctrName = $coreName;			
+			}
+			
 			$obj = new $ctrName();		
 			CoreController::share($this, $obj);
 			$this->assign('right', $obj->renderSTR());
