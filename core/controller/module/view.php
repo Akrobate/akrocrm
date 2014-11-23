@@ -23,11 +23,13 @@
 		
 			foreach ($modulesjoins as $modulename=>$module) {
 				foreach($module as $key=>$val) {
-					$listobj = new List_View();
-					$listobj->setFilter($key . " = " . $id);
-					$listobj->setModule($modulename);
-					$listobj->setAction('view');
-					$lists[] = array('content'=>$listobj->renderSTR(), 'title'=> ucfirst($modulename));
+				
+					$subpannelobj = new List_Subpanel();
+					$subpannelobj->setFilter($key . " = " . $id);
+					$subpannelobj->setModule($modulename);
+					$subpannelobj->setAction('view');
+					
+					$lists[] = array('content'=>$subpannelobj->renderSTR(), 'title'=> ucfirst($modulename));
 				}
 			}
 			$this->assign('sublists', $lists);

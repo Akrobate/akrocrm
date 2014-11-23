@@ -9,6 +9,22 @@ class OrmNode {
 	public static $allowedfields = array('text', 'join', 'largetext', 'photourl', 'date');
 	public $filter;
 	
+	public $start_limit;
+	public $nbr_limit;
+	public $total;
+	
+	
+	public function __construct() {
+	
+		$this->start_limit = 0;
+		$this->nbr_limit = 10;
+		$this->total = 0;
+	
+	
+	}
+	
+
+	
 	public function setFilter($filter) {
 	
 		$this->filter = $filter;
@@ -104,13 +120,24 @@ class OrmNode {
 
 	public function getAllData($module, $fields = array()) {
 	
+	
 		if (isset($this->filter) && $this->filter != '') {
 			$query = "SELECT * FROM $module WHERE " . $this->filter;
 		} else {
 			$query = "SELECT * FROM $module WHERE 1";		
 		}
+
+		sql::query($query);
+		$this->total = sql::nbrRows();
+		
+		// concat limits
+		$query .= " LIMIT  " . $this->start_limit . ", " . $this->nbr_limit;
+		// echo($query);
+		
 		sql::query($query);
 		$data_origin = sql::allFetchArray();
+		
+		// print_r ($data_origin);
 		$data_to = array();
 		foreach($data_origin as $data) {
 			$tmp = array();			
@@ -119,6 +146,7 @@ class OrmNode {
 			}		
 			$data_to[] = $tmp;
 		}
+
 		return $data_to;
 	}
 
