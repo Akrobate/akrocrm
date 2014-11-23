@@ -17,5 +17,4 @@
 			include PATH_CUSTOM_CONTROLLER . $path . $filename . '.php';
 		}
 		
-		
 	});

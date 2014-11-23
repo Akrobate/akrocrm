@@ -7,6 +7,7 @@ class OrmNode {
 //	public static $allowedfields = array('text', 'join', 'largetext', 'photourl', 'date', 'time');
 
 	public static $allowedfields = array('text', 'join', 'largetext', 'photourl', 'date');
+
 	public $filter;
 	
 	public $start_limit;
@@ -15,26 +16,24 @@ class OrmNode {
 	
 	
 	public function __construct() {
-	
 		$this->start_limit = 0;
 		$this->nbr_limit = 10;
-		$this->total = 0;
-	
-	
+		$this->total = 0;	
 	}
-	
 
 	
 	public function setFilter($filter) {
-	
 		$this->filter = $filter;
-	
 	}
+
 
 	public static function getFieldsFor($module) {
 		if (!empty($module)){
-			include("modules/$module/fields.php");
-			//print_r($fields);
+			if (file_exists("modules/$module/fields.php")) {
+				include("modules/$module/fields.php");					
+			} else if (file_exists(PATH_CORE_INTERNAL_MODULES . $module . "/fields.php")) {
+				include(PATH_CORE_INTERNAL_MODULES . $module . "/fields.php");
+			}
 			return $fields;
 		}
 	}
@@ -46,7 +45,6 @@ class OrmNode {
 	}
 	
 	
-	
 	public static function getFields($module) {	
 		$fields = self::getFieldsFor($module);
 		$allFields = array_keys($fields);
@@ -56,7 +54,6 @@ class OrmNode {
 	/**
 	 * 
 	 */
-
 
 	public static function dataFieldsAdapter($data, $fieldslist, $fieldaction = 'view', $rendered = false){
 		$ret = array();
@@ -86,15 +83,11 @@ class OrmNode {
 	}
 
 
-
-
 	public static function getData($module, $id) {
-	
 		$query = "SELECT * FROM $module WHERE id = $id";
 		sql::query($query);
 		$data = sql::allFetchArray();
-		return $data[0];
-		
+		return $data[0];		
 	}
 
 
@@ -104,7 +97,6 @@ class OrmNode {
 
 
 	public function getAllDataWithJoins($module, $listFields = array()) {
-		
 		$content = $this->getAllData($module, $listFields);	
 		$joins_data = array();
 		foreach($listFields as $jname=>$join) {
@@ -119,8 +111,6 @@ class OrmNode {
 
 
 	public function getAllData($module, $fields = array()) {
-	
-	
 		if (isset($this->filter) && $this->filter != '') {
 			$query = "SELECT * FROM $module WHERE " . $this->filter;
 		} else {
@@ -146,7 +136,6 @@ class OrmNode {
 			}		
 			$data_to[] = $tmp;
 		}
-
 		return $data_to;
 	}
 
@@ -157,9 +146,7 @@ class OrmNode {
 		$query .= ");";
 		sql::query($query);
 		$data = sql::allFetchArray();
-		
 		$data2 = array();
-		
 		foreach($data as $d) {
 			$data2[ $d['id'] ] = $d;
 		}
@@ -172,23 +159,19 @@ class OrmNode {
 		foreach($data as $d) {
 			$ret[$d[$field]] = $d[$field];
 		}
-		print_r($ret);
+		//print_r($ret);
 		return $ret;
 	}
 	
 	
 	public static function glueJoinDataToData(&$data, $joindata, $field) {
-
 		foreach($data as &$d) {
-
 			if ($d[$field]){
 				$d[$field] = $joindata[ $d[$field] ];
 			} 
 		}
-
 		return $data;
 	}
-
 
 	public function upsert($module, $fields, $data) {
 

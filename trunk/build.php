@@ -12,8 +12,24 @@ $dirs =  ModuleManager::getAllModules();
 
 $contactsrandomapi = true;
 
+if (in_array("--internalcreate", $argv)) {
+	$dirs2 =  ModuleManager::getAllInternalModules();
+	foreach($dirs2 as $dir) {
+		if (sql::tableExists($dir)) {
+			sql::removeTable($dir);
+		}
+			
+		unset($fields);
+		$toinclude = PATH_CORE_INTERNAL_MODULES . $dir . PATH_SEP ."fields.php";
+		include($toinclude);
+		$tree[$dir] = $fields;
+		sql::createTable($dir, $fields);		
+	}
+}
 
-foreach($dirs as $dir) {
+
+if (in_array("--create", $argv)) {
+	foreach($dirs as $dir) {
 		if (sql::tableExists($dir)) {
 			sql::removeTable($dir);
 		}		
@@ -22,8 +38,8 @@ foreach($dirs as $dir) {
 		include($toinclude);
 		$tree[$dir] = $fields;
 		sql::createTable($dir, $fields);		
+	}
 }
-
 
 if (in_array("--people", $argv)) {
 
@@ -73,11 +89,11 @@ if (in_array("--people", $argv)) {
 			}
 		}
 	}
-}
 
 
 
-if (in_array("--realcontacts", $argv)) {
+
+if (in_array("--realcontacts", $argv) || 1) {
 
 	$fields = OrmNode::getFieldsFor('contacts');
 	$dir = 'contacts';
@@ -123,6 +139,15 @@ if (in_array("--realcontacts", $argv)) {
 	
 
 }
+
+}
+
+
+
+
+
+
+
 
 
 

@@ -15,8 +15,15 @@
 	define ("PATH_CUSTOM_CONTROLLER", PATH_CUSTOM . "controller" . PATH_SEP);	
 	define ("PATH_CUSTOM_VIEWS", PATH_CUSTOM . "views". PATH_SEP);		
 
+	define ("PATH_CORE_INTERNAL_MODULES", PATH_CORE . "internalmodules/" );	
+
+
+
 	define ("PATH_CORE_RESSOURCES_JS", PATH_CORE . "ressources/js/". PATH_SEP);		
 	define ("URL_CORE_RESSOURCES_JS", "core/ressources/js/". PATH_SEP);
+
+	define ("ADMIN_LOGIN", "admin");
+	define ("ADMIN_PASSWORD", "admin");
 
 
 	include(PATH_CONFIGS . "db.php");
@@ -27,7 +34,8 @@
 	include(PATH_LIBS . "html.render.class.php");	
 	include(PATH_LIBS . "core.controller.class.php");
 	include(PATH_LIBS . "modulemanager.class.php");
-	include(PATH_LIBS . "datanode.class.php");	
+	include(PATH_LIBS . "datanode.class.php");
+	include(PATH_LIBS . "users.class.php");
 	
 	include(PATH_CURRENT . "routeur.php");
 
