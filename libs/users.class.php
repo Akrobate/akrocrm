@@ -5,7 +5,8 @@ class users {
 	private static $connected = null;
 	
 	public static function connect($login, $pw) {
-		if( (ADMIN_LOGIN == $login) && (ADMIN_PASSWORD == $pw)) {
+	
+		if( (ADMIN_LOGIN == $login) && (ADMIN_PASSWORD == $pw)) {		
 			self::$connected = true;
 			$_SESSION['user']['connected'] = true;
 			return true;

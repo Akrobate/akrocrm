@@ -3,23 +3,25 @@
 class ModuleManager {
 
 	public static function getAllModules() {
+		return self::getModulesFromDir(PATH_MODULES);
+	}
+
+	public static function getAllInternalModules() {
+		return self::getModulesFromDir(PATH_CORE_INTERNAL_MODULES);
+	}
 	
-		$dirs = scandir(PATH_MODULES);
+	public static function getModulesFromDir($path) {
+		$dirs = scandir($path);
 		$rez = array();
-		
 		foreach($dirs as $dir) {
 			if(($dir != "..") && ($dir != ".")&& ((strpos($dir, ".") === false))) {
 				$rez[] = $dir;
 			}
 		}
-		
 		return $rez;
 	}
 
-
-
 	public static function getJoinsOnModule($module) {
-	
 		$ret = array();
 		$allmodules = self::getAllModules();
 		foreach($allmodules as $mod) {
@@ -29,10 +31,7 @@ class ModuleManager {
 					$ret[$mod][$k] = $v;
 				}
 			}
-			
 		}
 		return $ret;
-		
 	}
-
 }
