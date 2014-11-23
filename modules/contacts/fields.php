@@ -13,6 +13,10 @@ $fields['prenom']['typeSQL'] = 'VARCHAR(255)';
 $fields['prenom']['type'] = 'text';
 $fields['prenom']['label'] = 'Prenom';
 
+$fields['naissance']['typeSQL'] = 'DATE';
+$fields['naissance']['type'] = 'date';
+$fields['naissance']['label'] = 'Date de naissance';
+
 $fields['telephone']['typeSQL'] = 'VARCHAR(255)';
 $fields['telephone']['type'] = 'text';
 $fields['telephone']['label'] = 'Téléphone';

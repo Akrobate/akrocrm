@@ -10,9 +10,34 @@ class CoreController {
 	public $template;
 	public $data;
 
+	public static $headressources = array();
+
 	public function __construct() {
 		$this->autoloadTemplate();
 	}
+
+
+	// Concu pour les fields Devra bouger d'ici dans fields.php ici une methode plus generique
+	
+	
+	public function addJS($js = "")	{
+
+		if ($js == "") {
+
+			$classname = get_class($this);			
+			$action = $this->getAction();			
+			$exp = explode("_", strtolower($classname . "_" .$action));
+			$str = implode("/", $exp);
+			
+			if (file_exists(PATH_CORE_RESSOURCES_JS . $str . ".js")) {
+				ressources::addJs(URL_CORE_RESSOURCES_JS . $str . ".js");
+			}
+		} else {
+			ressources::addJs($js);
+		}
+		
+	}	
+
 
 
 	public function autoloadTemplate() {
@@ -64,6 +89,10 @@ class CoreController {
 		$this->data[$name] = $val;
 		return $this;		
 	}
+	
+	public function getvar($name) {
+		return $this->data[$name];
+	}	
 
 	public function init() {
 	

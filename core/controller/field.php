@@ -55,19 +55,12 @@ class Field extends CoreController{
 	
 	/* Non finalisé */
 	
-	
 	public function isJoin() {
 		
 		$obj = new OrmNode();
 		$obj->getAllObj();
-	
-		
-		$explode = explode("_", $this->getName);
-		
-		
+		$explode = explode("_", $this->getName);		
 		$nb_exoplode = count($explode);
-		
-		
 		if ($nb_exoplode > 1) {
 		
 			if ($explode[0] == 'id' && in_array($explode[1], $mudules)) {

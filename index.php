@@ -13,10 +13,8 @@
 	$ctr->setAction($action);
 	$ctr->setModule($controller);
 	$main->assign('content', $ctr);
+	
 	$main->render();
-
-
-
-
-
-
+	
+	
+	

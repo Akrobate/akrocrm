@@ -3,9 +3,10 @@
 class OrmNode {
 
 	public static $joins = array();
+	// @TODO Time a finaliser (format dentrée et icone up/down
+//	public static $allowedfields = array('text', 'join', 'largetext', 'photourl', 'date', 'time');
 
-	public static $allowedfields = array('text', 'join', 'largetext', 'photourl');
-
+	public static $allowedfields = array('text', 'join', 'largetext', 'photourl', 'date');
 	public $filter;
 	
 	public function setFilter($filter) {
@@ -138,7 +139,6 @@ class OrmNode {
 	}
 	
 	
-	
 	public static function getFieldListFromDataSet($data, $field) {
 		$ret = array();
 		foreach($data as $d) {
@@ -147,6 +147,7 @@ class OrmNode {
 		print_r($ret);
 		return $ret;
 	}
+	
 	
 	public static function glueJoinDataToData(&$data, $joindata, $field) {
 
@@ -159,7 +160,6 @@ class OrmNode {
 
 		return $data;
 	}
-
 
 
 	public function upsert($module, $fields, $data) {
