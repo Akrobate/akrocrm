@@ -46,7 +46,7 @@ class url {
 }
 
 
-
+/*
 class link {
 
 	static function internal ($controller, $action, $id = null) {
@@ -59,7 +59,7 @@ class link {
 
 }
 
-
+*/
 
 class str {
 
