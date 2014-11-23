@@ -14,6 +14,5 @@ class Module_Notes_Edit extends CoreController {
 			
 		$this->assign('fields', $data);
 		$this->assign('id', $id);
-		$this->assign('title', "Custom");
 	}
 }
