@@ -235,20 +235,21 @@ class OrmNode {
 			$response['msg'] = 'EDITED';
 			$response['id'] = $data['id'];
 			$response['query'] = $query;
-		
+			
 		} else {
 			$data_string = implode(',',$data_string_array);
 			$query = 'INSERT INTO ' . $module . ' ('.$fields_string.') VALUES ('. $data_string .');';
 			//sql::query(utf8_decode($query));
-			echo($query);
+			//echo($query);
 			sql::query($query);			
 			$lastid = sql::lastId();
 			$response['msg'] = 'ADDED';
 			$response['id'] = $lastid;
 			$response['query'] = $query;
-			return $response;
+
 		
 		}
+		return $response;
 	}
 
 }

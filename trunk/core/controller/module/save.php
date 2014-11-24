@@ -27,7 +27,8 @@ class Module_Save extends CoreController {
 			$id = $rez['id'];
 		}
 
-		url::redirect($this->getModule(), 'view', $rez['id']);	
+		//echo("========" . $id);
+		url::redirect($this->getModule(), 'view', $id);	
 		
 	}
 }
