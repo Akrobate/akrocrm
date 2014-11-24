@@ -15,11 +15,19 @@ class Module_Save extends CoreController {
 		}
 		
 		$allFields = array_keys($fields);
-		$allFields[] = 'id';
-		$data['id'] = $id;
+		
+		if ($id != "") {
+			$allFields[] = 'id';
+			$data['id'] = $id;
+		}
 		
 		$rez = $orm->upsert($this->getModule(), $allFields, $data);	
 		
-		url::redirect($this->getModule(), 'view', $id);	
+		if ($rez['id'] != 0) {
+			$id = $rez['id'];
+		}
+
+		url::redirect($this->getModule(), 'view', $rez['id']);	
+		
 	}
 }

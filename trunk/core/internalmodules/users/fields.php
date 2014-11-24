@@ -14,9 +14,15 @@ $fields['password']['type'] = 'text';
 $fields['password']['label'] = 'Mot de passe';
 
 
-$fields['id_contact']['type'] = 'join';
-$fields['id_contact']['typeSQL'] = 'INT(11)';
-$fields['id_contact']['label'] = 'Contact';
-$fields['id_contact']['join']['table'] = 'contacts';
-$fields['id_contact']['join']['field'] = 'nom';
-$fields['id_contact']['join']['type'] = '1-n';
+$fields['id_profil'] = array(
+						'typeSQL' => 'INT(11)',
+						'type' => 'join',
+						'label' => 'Profil join',
+						'join' => array(
+							'table' => 'profiles',
+							'field' => 'nom',
+							'type' => '1-n'
+							)				
+						);
+						
+						

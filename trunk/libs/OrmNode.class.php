@@ -81,6 +81,38 @@ class OrmNode {
 		}
 		return $ret;	
 	}
+	
+	
+	public static function dataFieldsAdapterEmpty($fieldslist, $fieldaction = 'view', $rendered = false){
+		$ret = array();
+		
+		foreach($fieldslist as $field => $val) {
+		
+			$type = $fieldslist[$field]['type'];
+			
+			if (in_array($type, self::$allowedfields)) {
+				$typename = ucfirst($type);
+				$classname = "Field_".$typename;
+				$obj = new $classname();
+			} else {
+				$obj = new Field_Text();
+			}
+			$obj->setAllFieldsParams($field, $fieldslist[$field]);
+			$obj->setValue("");	
+			$obj->setAction($fieldaction);
+	
+		
+			if ($rendered == 'rendered') {
+				$ret[$field] = $obj->renderSTR();
+			} else {
+				$ret[$field] = $obj;
+			}
+		}
+		return $ret;	
+	}	
+	
+	
+	
 
 
 	public static function getData($module, $id) {
@@ -175,6 +207,9 @@ class OrmNode {
 
 	public function upsert($module, $fields, $data) {
 
+		print_r($data);
+
+
 		$nbr_fields = count($fields);
 		$data_string_array = array();
 		$fields_string = implode(',',$fields);
@@ -205,6 +240,7 @@ class OrmNode {
 			$data_string = implode(',',$data_string_array);
 			$query = 'INSERT INTO ' . $module . ' ('.$fields_string.') VALUES ('. $data_string .');';
 			//sql::query(utf8_decode($query));
+			echo($query);
 			sql::query($query);			
 			$lastid = sql::lastId();
 			$response['msg'] = 'ADDED';
