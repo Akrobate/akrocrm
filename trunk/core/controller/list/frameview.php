@@ -2,6 +2,8 @@
 
 class List_Frameview extends CoreController {
 
+	public $filter;
+
 	public function init() {
 
 		$list = new List_View();
@@ -10,9 +12,13 @@ class List_Frameview extends CoreController {
 		
 		$commande = request::get('commande');
 		$start = request::get('start');
-		$filter = request::get('filter');
 		
-		$list->setFilter($filter);
+		if (!$this->filter) {
+			$filter = request::get('filter');
+			$this->setFilter($filter);
+		} 
+		
+		$list->setFilter($this->filter);
 		
 		if ($start == "") {
 			$start = 0;
@@ -43,6 +49,12 @@ class List_Frameview extends CoreController {
 		$this->assign('start', $start);
 		$this->assign('list', $listContent);
 		$this->assign('mainmodule', ucfirst($modules));		
+	}
+	
+	
+	public function setFilter($filter) {
+		$this->filter = $filter;
+	
 	}
 		
 }

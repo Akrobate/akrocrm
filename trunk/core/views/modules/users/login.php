@@ -10,6 +10,8 @@
 				<label for="exampleInputPassword1">Mot de passe</label>
 				<input type="password" name="password" class="form-control" id="exampleInputPassword1" placeholder="Password">
 			  </div>
+			  <input type="hidden" name="action" value="login" >
+			  <input type="hidden" name="controller" value="users" >
 			  <button type="submit" class="btn btn-default">Submit</button>
 			</form>
 		</div>
