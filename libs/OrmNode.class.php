@@ -207,7 +207,7 @@ class OrmNode {
 
 	public function upsert($module, $fields, $data) {
 
-		print_r($data);
+		//print_r($data);
 
 
 		$nbr_fields = count($fields);
@@ -216,7 +216,7 @@ class OrmNode {
 		$data_string = "";
 		foreach($fields as $field) {
 			if (isset($data[$field]) && (!empty($data[$field]))) {
-				$data_string_array[$field] = '"'. $data[$field] .'"';
+				$data_string_array[$field] = '"'.  sql::escapeString( $data[$field] ) .'"';
 			} else {
 				$data_string_array[$field] = '""';		
 			}	
@@ -225,7 +225,7 @@ class OrmNode {
 		if (isset($data['id']) && ($data['id'] != 0)) {
 		
 			foreach($fields as $field) {
-				$data_string .= $field . '=' . $data_string_array[$field] . ',';
+				$data_string .= $field . '=' .$data_string_array[$field] . ',';
 			}
 			$data_string = substr($data_string, 0, -1);
 		

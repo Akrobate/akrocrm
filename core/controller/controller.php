@@ -8,7 +8,12 @@ class Controller extends CoreController {
 		$action = $this->action;
 		$module = $this->module;
 		
+		
+		//echo("<h1>connetcted</h1>");
+		
+		
 		if (users::isConnected()) {
+		
 				if ($action != "") {
 		
 					$moduleName = ucfirst($module);			
@@ -31,13 +36,10 @@ class Controller extends CoreController {
 				$allModules = ModuleManager::getAllModules();
 				$this->assign('topLinks', $allModules);
 	
-	
 				$obj = new Sidebar_View();
 				$obj->setModulesList($allModules);
 				$this->assign('left', $obj->renderSTR());
-				$this->assign('sidebar', true);
-		
-				
+				$this->assign('sidebar', true);			
 		} else {
 			
 				$customName = 'Modules_Users_Login';
@@ -45,11 +47,8 @@ class Controller extends CoreController {
 				$this->assign('sidebar', false);
 				$objstr = $obj->renderSTR();
 				$this->assign('middle', $objstr);
-		}
-		
-		}
-	
-
+		}	
+	}
 }
 
 
