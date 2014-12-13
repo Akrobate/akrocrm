@@ -2,15 +2,10 @@
 
 class Controller extends CoreController {
 
-
 	public function init() {
 
 		$action = $this->action;
 		$module = $this->module;
-		
-		
-		//echo("<h1>connetcted</h1>");
-		
 		
 		if (users::isConnected()) {
 		
