@@ -2,6 +2,9 @@
 
 require_once("api.php");
 //print_r ($argv);
+
+// clear;php build.php --create --people --realcontacts
+
 $dirs = scandir(PATH_MODULES);
 error_reporting(15);
 $tree = array();

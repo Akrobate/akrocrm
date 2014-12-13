@@ -48,18 +48,11 @@ class users {
 			sql::query("SELECT * FROM users WHERE login='".$login."' AND password='".$pw."'");
 			if ($user = sql::fetchArray()) {
 				self::$connected = true;
-	
-//				$_SESSION['user']['id'] = $user['id'];
-//				$_SESSION['user']['login'] = $user['login'];
 				self::$me = $user;
 				$_SESSION['user'] = self::$me;
 				$_SESSION['user']['connected'] = true;
-				
 				self::getProfile();
-				
-			
 				return true;
-				
 			} else {
 				self::$connected = false;
 				unset($_SESSION['user']);

@@ -1,21 +1,13 @@
 <?php
 
-	session_start();
+	// DO NOT FORGET: "LESS IS MORE"
 	
-	error_reporting(15);
+	session_start();	
 	require_once("./api.php");
 
-	$controller = request::get("controller");
-	$action = request::get("action");
-	
 	$main = new Main();	
-	
 	$ctr = new Controller();
-	$ctr->setAction($action);
-	$ctr->setModule($controller);
-	
+	$ctr->setAction(request::get("action"));
+	$ctr->setModule(request::get("controller"));
 	$main->assign('content', $ctr);
 	$main->render();
-	
-	//print_r(users::getProfile()); 
-	//print_r(users::getMe());
