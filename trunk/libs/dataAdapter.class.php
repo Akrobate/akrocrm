@@ -4,6 +4,7 @@
 class DataAdapter {
 
 
+	public static $allowedfields = array('text', 'join', 'largetext', 'photourl', 'date');
 	/**
 	 * 
 	 */
