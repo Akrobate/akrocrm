@@ -11,8 +11,18 @@ class url {
 
 	static $rewrited = false;
 	
+	/**
+	 * @brief		Methode permettant de definir le mode de redirection
+	 * @details		La classe url peut fonctionner de deux manières: Soit en parametrisant les 
+ 	 *				url ex: ?action=a&controller=b
+	 *				Soit en mode a/b/id/other_params/
+	 * @param	bool		true = mode avec les / (redirection necessaire), false = mode parametre d'url
+	 * @return    self
+	 */
+	
 	static function setRewrite($bool) {
 		self::$rewrited = $bool;
+		return self;
 	}
 
 	/**
