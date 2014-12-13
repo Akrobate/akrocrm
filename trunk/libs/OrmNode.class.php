@@ -1,6 +1,6 @@
 <?php
 
-class OrmNode {
+class OrmNode extends DataAdapter {
 
 	public static $joins = array();
 	// @TODO Time a finaliser (format dentrée et icone up/down
