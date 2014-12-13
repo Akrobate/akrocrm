@@ -1,11 +1,27 @@
 <?php
 
+/**
+ * @brief		Classe sql permettant de gerer toutes les interaction de base de données
+ * @details		surcharge de toutes les méthodes d'acces a la base de données
+ *				
+ * @author		Artiom FEDOROV
+ */
+
 class sql {
 
 	private static $connect_handler = null;
 	private static $query_result;
 	private static $display = 0; // variable pour le debug	
-	
+
+
+	/**
+	 * @brief		Méthode de connection a la base de données
+	 * @details		Se connecte a la base de données selon les constantes
+	 *				DB_HOST, DB_USER, DB_PASSWORD
+	 *				Le handler est renvoyé et stocké au niveau du singleton
+	 * @return	handler		Renvoi le handler de la connection
+	 */
+	 
 	public static function connect() {
 		$connect_handler = mysql_connect(DB_HOST, DB_USER, DB_PASSWORD);
 		mysql_select_db(DB_NAME, $connect_handler);
@@ -13,18 +29,33 @@ class sql {
 		return self::$connect_handler;
 	}
 
+
+	/**
+	 * @brief		Méthode d'execution de requetes
+	 * @details		Execute la requette 
+	 *				DB_HOST, DB_USER, DB_PASSWORD
+	 *				Le pointeur de la requete est renvoyé et stocké au niveau du singleton
+	 * @return	query_result	Renvoie le resultat de la requette a fetcher
+	 */
+	 
 	public static function query($query, $connect_handler = NULL) {
 		if ($connect_handler == null) {
 			if (self::$connect_handler == null) {
 				self::connect();
 			}
-			// real_escape_string a prevoir ici
 			self::$query_result = mysql_query($query, self::$connect_handler);
 		} else {
 			self::$query_result = mysql_query($query, $connect_handler);
 		}
+		return self::$query_result;
 	}
 
+	
+	/**
+	 * @brief		Methode qui renvoie tous les resultats de la requete
+	 * @details		Fetch l'ensemble de la requete avec la méthode fetch_array
+	 * @return	Array	Renvoi tous les résultats de la requete
+	 */
 	
 	public static function allFetchArray() {
 		$data = array();
@@ -190,11 +221,6 @@ class sql {
 	public static function display($var) {	
 		self::$display = $var;
 	}
-
-
-
-
-
 
 
 	public static function peopleTableContacts($name, $params = array()) {

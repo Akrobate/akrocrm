@@ -3,6 +3,7 @@
 /**
  * @brief		Classe users permettant de generer les utilisateurs et l'authentification
  * @details		Connection, deconnection, gestion de la session, tentatives de connection
+ *					Classe qui va effectuer toutes les opérations d'authentification gestion des profils
  *				
  * @author		Artiom FEDOROV
  */
