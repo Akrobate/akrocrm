@@ -32,6 +32,8 @@
 	require_once(PATH_LIBS . "modulemanager.class.php");
 	require_once(PATH_LIBS . "datanode.class.php");
 	require_once(PATH_LIBS . "users.class.php");
-	
+	require_once(PATH_LIBS . "phpmailer.class.php");
+	require_once(PATH_LIBS . "mymail.class.php");
+		
 	require_once(PATH_CURRENT . "routeur.php");
 

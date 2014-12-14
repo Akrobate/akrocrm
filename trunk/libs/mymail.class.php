@@ -1,6 +1,15 @@
 <?php
 
 
+/**
+ * @brief		Classe permettant de gerer les mails
+ * @details		Petit client Imap pour gestion des mails 
+ *				optimisé pour gmail pour le moment
+ *
+ * @author		Artiom FEDOROV
+ */
+ 
+ 
 class MyMail {
 
 	private $hostname;
@@ -8,16 +17,49 @@ class MyMail {
 	private $password;
 
 
-	function __construct() {
-		
-		$this->hostname = MAIL_HOST;
-		$this->username = MAIL_USER;
-		$this->password = MAIL_PASSWORD;
-
+	function __construct() {		
+		//$this->hostname = MAIL_HOST;
+		//$this->username = MAIL_USER;
+		//$this->password = MAIL_PASSWORD;
+	}
 	
-	}	
+	
+	/**
+	 * @brief		setteur du login 
+	 * @param	username	prend en parametre le login
+	 * @return	this	renvoi l'objet courant
+	 */
+	
+	public function setUsername($username) {
+		$this->username = $username;
+		return $this;
+	}
+	
 
-
+	/**
+	 * @brief		setteur du password de la messagerie 
+	 * @param	pw	prend en parametre le password
+	 * @return	this	renvoi l'objet courant
+	 */
+	
+	public function setPassword($pw) {
+		$this->password = $pw;
+		return $this;
+	}
+	
+	
+	/**
+	 * @brief		setteur du host de la messagerie 
+	 * @param	host	prend en parametre le host
+	 * @return	this	renvoi l'objet courant
+	 */
+	
+	public function setHost($host) {
+		$this->hostname = $host;
+		return $this;
+	}
+	
+	
 	public static function getNewDebug() {
 
 		$inbox = imap_open($this->hostname,$this->username,$this->password) 
@@ -59,10 +101,7 @@ class MyMail {
 	}
 	
 	
-	
-	
 		public function getNew() {
-
 			$res = array();
 
 			/* try to connect */
@@ -233,6 +272,13 @@ class MyMail {
 			
 			return $result;	
 		}
+		
+		
+	
+		
+		
+		
+		
 }
 
 
