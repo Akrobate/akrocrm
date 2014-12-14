@@ -9,7 +9,7 @@
             <span class="icon-bar"></span>
             <span class="icon-bar"></span>
           </button>
-          <a class="navbar-brand" href="#">Project name</a>
+          <a class="navbar-brand" href="<?=url::internal('home','index')?>">AkroCRM</a>
         </div>
         
         <? endif; ?>           
@@ -36,8 +36,11 @@
       <div class="row" style="margin-top: 20px;">
       
       	<? if ($sidebar == true): ?>
-          	<div class="col-md-3" >
+          	<div class="col-md-3 navbar-fixed-top" style="margin-top: 40px;" >
     		 	<?=$left?>
+    		 </div>
+      
+             <div class="col-md-3">
     		 </div>
       
     		 <div class="col-md-9">

@@ -1,5 +1,11 @@
 <?php
 
+/**
+ * @brief		Definition du modele de users
+ * @details		Definition des champs de la table interne users
+ *				
+ * @author		Artiom FEDOROV
+ */
 
 $fields['email']['typeSQL'] = 'VARCHAR(255)';
 $fields['email']['type'] = 'text';
@@ -24,5 +30,17 @@ $fields['id_profil'] = array(
 							'type' => '1-n'
 							)				
 						);
+
+
+$fields['email_login'] = array(
+						'typeSQL' => 'VARCHAR(255)',
+						'type' => 'text',
+						'label' => 'Email Login'					
+						);
 						
 						
+$fields['email_password'] = array(
+						'typeSQL' => 'VARCHAR(255)',
+						'type' => 'text',
+						'label' => 'Email Mot de passe'					
+						);						
