@@ -65,14 +65,35 @@ class sql {
 		return $data;
 	}
 	
+	
+	/**
+	 * @brief		Methode qui renvoie un resultat de la requete
+	 * @details		Fetch de la requete avec la méthode fetch_array
+	 * @return	Array	Renvoi le resultat courant de la requete
+	 */
+	
 	public static function fetchArray() {
 		return mysql_fetch_array(self::$query_result);
 	}
 
+
+	/**
+	 * @brief		Methode qui renvoie le nombre de résultats
+	 * @details		nombre de resultats de la requete
+	 * @return	int	Renvoi nombre de resultats
+	 */
+	 
 	public static function nbrRows() {
 		return mysql_num_rows(self::$query_result);
 	}
 
+
+	/**
+	 * @brief		Methode qui renvoie l'id du dernier element inseré
+	 * @details		identifiant du dernier enregistrement crée
+	 * @return	int	Renvoi l'id
+	 */
+	 
 	public static function lastId() {
 		return mysql_insert_id() ;
 	}

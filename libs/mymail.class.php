@@ -60,82 +60,55 @@ class MyMail {
 	}
 	
 	
-	public static function getNewDebug() {
+	/**
+	 * @brief		Methode qui releve tous les nouveaux mails
+	 * @param	host	Releve tous les nouveaux mails
+	 * @return	array 	Renvoi le tableau contenant l'ensemble des mails
+	 */
+	
+	public function getNew() {
+		$res = array();
 
-		$inbox = imap_open($this->hostname,$this->username,$this->password) 
-			or die('Cannot connect to Gmail: ' . imap_last_error());
-
-		var_dump($inbox);
-		
+		/* try to connect */
+		$inbox = imap_open($this->hostname,$this->username,$this->password)
+			 or die('Cannot connect to Gmail: ' . imap_last_error());
+			 
 		$emails = imap_search($inbox,'ALL');
-
-		/* if emails are returned, cycle through each... */
-		var_dump($emails);
-
-		if ($emails) {
 		
-		/* begin output var */
+		if ($emails) {
+	
 		  foreach($emails as $email_number) {
 
-			/* get information specific to this email */
 			$overview = imap_fetch_overview($inbox,$email_number,0);
-			$message = imap_fetchbody($inbox,$email_number,2);
-
-			/* output the email header information */
-			$output.= '<div class="toggler '.($overview[0]->seen ? 'read' : 'unread').'">';
-			$output.= '<span class="subject">'.$overview[0]->subject.'</span> ';
-			$output.= '<span class="from">'.$overview[0]->from.'</span>';
-			$output.= '<span class="date">on '.$overview[0]->date.'</span>';
-			$output.= '</div>';
-
-			/* output the email body */
-			$output.= '<div class="body">'.$message.'</div>';
+			$data['message'] = imap_fetchbody($inbox,$email_number,2);
+			$data['date'] = $overview[0]->date;
+			$data['from'] = $overview[0]->from;
+			$data['subject'] = $overview[0]->subject;
+			$data['id'] = $overview[0]->message_id;
+			$data['obj'] = $overview[0];
+			
+			preg_match('#<(.*)>#', $data['from'], $data['from']) ;
+			$data['from'] = trim($data['from'][1]);
+			$res[] = $data;
 		  }
-
-		  echo $output;
 		}
 
 		/* close the connection */
 		imap_close($inbox);
 
+		return $res;
+		/* put the newest emails on top */
+		//rsort($emails);
 	}
 	
 	
-		public function getNew() {
-			$res = array();
-
-			/* try to connect */
-			$inbox = imap_open($this->hostname,$this->username,$this->password) or die('Cannot connect to Gmail: ' . imap_last_error());
-			$emails = imap_search($inbox,'ALL');
-			
-			if ($emails) {
-		
-			  foreach($emails as $email_number) {
-
-				//var_dump($overview);
-				$overview = imap_fetch_overview($inbox,$email_number,0);
-				$data['message'] = imap_fetchbody($inbox,$email_number,2);
-				$data['date'] = $overview[0]->date;
-				$data['from'] = $overview[0]->from;
-				$data['subject'] = $overview[0]->subject;
-				$data['id'] = $overview[0]->message_id;
-				
-				preg_match('#<(.*)>#', $data['from'], $data['from']) ;
-				$data['from'] = trim($data['from'][1]);
-				$res[] = $data;
-			  }
-			}
-
-			/* close the connection */
-			imap_close($inbox);
-
-			return $res;
-			/* put the newest emails on top */
-			//rsort($emails);
-
-	}
-	
-	
+	/**
+	 * @brief		Methode qui releve tous les nouveaux mails et les efface
+	 * @details		Releve tous les nouveaux mails et les supprime de la boite
+	 * @param	realydelete	si true alors on vide la corbeille des mails
+	 *						si false alors les mails sont conservés dans la corbeille
+	 * @return	array 	Renvoi le tableau contenant l'ensemble des mails
+	 */
 	
 	public function getAllAndRemove($realydelete = true) {
 		$res = array();
@@ -160,14 +133,7 @@ class MyMail {
 			$data['from'] = trim($data['from'][1]);
 			$res[] = $data;
 			if ($realydelete) {
-			
-				//count($res) - 1
-			//	$check = imap_mailboxmsginfo($inbox);
-			//	echo "Nombre de messages avant effacement : " . $check->Nmsgs . "<br />\n";
-					imap_delete($inbox, $email_number);				
-			//	$check = imap_mailboxmsginfo($inbox);
-			//	echo "Nombre de messages après effacement : " . $check->Nmsgs . "<br />\n";
-			
+				imap_delete($inbox, $email_number);
 			}
 		  }
 		}
@@ -176,7 +142,6 @@ class MyMail {
 			imap_expunge($inbox);
 		}
 		
-
 		imap_close($inbox);
 
 		return $res;
@@ -255,7 +220,7 @@ class MyMail {
 			$fromMail =  $this->username;	
 			$toMail = $to;
 			
-			$mail->SetFrom($fromMail, "Niko-Niko");
+			$mail->SetFrom($fromMail, "user name");
 						
 			$mail->Subject = $title;
 
