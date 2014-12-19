@@ -40,7 +40,7 @@ class Field extends CoreController{
 		return $this->value;
 	}
 	
-	public function init() {		
+	public function init() {
 		$this->autoloadTemplateField();
 	}
 	

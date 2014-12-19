@@ -16,6 +16,8 @@
 			$content = $orm->getData($this->getModule(), $id);
 			$data = OrmNode::dataFieldsAdapter($content, $fields, 'view', 'rendered');		
 			$this->assign('fields', $data);
+
+			$dataApi['fields'] = $content;
 			
 			// On recupere les subpannels
 			$modulesjoins = ModuleManager::getJoinsOnModule($this->getModule());
@@ -28,10 +30,17 @@
 					$subpannelobj->setFilter($key . " = " . $id);
 					$subpannelobj->setModule($modulename);
 					$subpannelobj->setAction('view');
+					$subpannelobj->setFormat($this->getFormat());
 					
 					$lists[] = array('content'=>$subpannelobj->renderSTR(), 'title'=> ucfirst($modulename));
+					
 				}
 			}
 			$this->assign('sublists', $lists);
+			
+			$dataApi['sublists'] = $lists;
+			
+			$this->assign('datasForApi', $dataApi);
+			
 		}
 	}

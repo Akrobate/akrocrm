@@ -22,11 +22,7 @@
 		<script>
 		</script>
 	</head>
-	
 	<body role="document">
-		
-		<!--?=$content->render();?-->
 		<?=$contentSTR;?>
 	</body>
-	
 </html>
