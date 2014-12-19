@@ -1,10 +1,21 @@
 <?php
 
+/**
+ *	Classe Permettant la gestion des listes
+ *
+ *	@brief Premet la gestion des listes avec le composant fields
+ *
+ *
+ */
+
+
 class List_View extends CoreController {
 
 	public $start;
 	public $nbr;
 	public $total;
+//	public $originalDatas;
+
 
 	public function __construct() {
 		parent::__construct();
@@ -14,11 +25,11 @@ class List_View extends CoreController {
 
 
 	public function init() {
+		
 		$orm = new OrmNode();
 		
 		$orm->start_limit = $this->start;
 		$orm->nbr_limit = $this->nbr;		
-		
 		$listFields = $this->getListFields();
 		
 		$orm->setFilter($this->filter);
@@ -27,11 +38,17 @@ class List_View extends CoreController {
 		$this->total = $orm->total;
 		
 		$result = array();
+		$resultArray = array();
+		
 		foreach($content as $cntk => $cnt) {
-			$result[] = OrmNode::dataFieldsAdapter($cnt, $listFields, 'list', 'rendered');
+			$result[] = OrmNode::dataFieldsAdapter($cnt, $listFields, 'list', 'rendered', $this->getFormat());
+			$resultArray[] = $cnt;
 		}
 		
 		$this->assign('datas', $result);
+		$this->assign('datasForApi', $resultArray);
+		
+		//print_r($resultArray);
 
 	}
 		

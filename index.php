@@ -9,5 +9,7 @@
 	$ctr = new Controller();
 	$ctr->setAction(request::get("action"));
 	$ctr->setModule(request::get("controller"));
+	$ctr->setFormat(request::get("format"));
+	CoreController::share($ctr, $main);
 	$main->assign('content', $ctr);
 	$main->render();

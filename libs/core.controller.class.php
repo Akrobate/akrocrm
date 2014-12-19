@@ -1,12 +1,18 @@
 <?php
 
-
+/**
+ *	@brief	Classe dont extends quasi tous les controlleurs de l'application
+ *	Cette classe gere l'inclusion des templates
+ *	@author	Artiom FEDOROV
+ *
+ */
 
 class CoreController {
 
 
 	public $action;
 	public $module;
+	public $format;
 	public $template;
 	public $data;
 
@@ -39,6 +45,24 @@ class CoreController {
 	}	
 
 
+	/**
+	 *	Méthode destinée a être surchargée dans les sous controlleurs
+	 *
+	 */
+
+	public function init() {
+	
+	}
+
+
+	/**
+	 *	Méthode destinée a être surchargée dans les sous controlleurs
+	 *
+	 */
+
+	public function preinit() {
+
+	}
 
 	public function autoloadTemplate() {
 	
@@ -61,22 +85,66 @@ class CoreController {
 	}
 	
 	
+	/**
+	 *	@brief		Setteur d'Action
+	 *	@return		this Renvoi la classe courante
+	 */
+	
 	public function setAction($action) {
 		$this->action = $action;
 		return $this;		
 	}
 
+
+	/**
+	 *	@brief		Setteur de Modules
+	 *	@return		this Renvoi la classe courante
+	 */
+	 
 	public function setModule($module) {
 		$this->module = $module;
 		return $this;
 	}
 
+
+	/**
+	 *	@brief		Setteur de format
+	 *	@return		this Renvoi la classe courante
+	 */
+
+	public function setFormat($format) {
+		$this->format = $format;
+		return $this;
+	}
+
+
+	/**
+	 *	@brief		Getteur d'action
+	 *	@return		string Renvoi le nom de l'action
+	 */
+	 
 	public function getAction() {
 		return $this->action;
 	}
 
+
+	/**
+	 *	@brief		Getteur de modules
+	 *	@return		string Renvoi le nom module
+	 */
+
 	public function getModule() {
 		return $this->module;
+	}
+	
+	
+	/**
+	 *	@brief		Getteur de format
+	 *	@return		string Renvoi le format
+	 */
+	
+	public function getFormat() {
+		return $this->format;
 	}
 
 	public function setTemplate($tpl) {
@@ -94,49 +162,99 @@ class CoreController {
 		return $this->data[$name];
 	}	
 
-	public function init() {
-	
-	}
 
-	public function preinit() {
-
-	}
+	/**
+	 *	@brief		Méthode qui execute l'ensemble du processus
+	 *	@return 	string	Renvoi le rendu vers la sortie standard
+	 *
+	 */
 
 	public function render() {
-		$this->preinit();
-		$this->init();
-		$classname = get_class($this);
-		//echo("Classname: " . $classname . " - " . $this->template);
-		
-		if (count($this->data)){
-			extract($this->data);
-		}
-		include($this->template);
-		
+		echo $this->renderSTR();
 	}
+	
 
+	/**
+	 *	@brief		Méthode qui execute l'ensemble du processus
+	 *	@return 	string	Renvoi le rendu dans une variable
+	 *
+	 */
+	 
 	public function renderSTR() {
 		$this->preinit();
 		$this->init();
-		ob_start();
-		if (count($this->data)){
-			extract($this->data);
+		$content = "";
+		if ($this->isFormatJson()) {
+			if ($this->getJsonDataForApi()) {
+				$content = $this->getJsonDataForApi();
+				echo($content);
+			}
+		} else {
+			ob_start();
+			if (count($this->data)){
+				extract($this->data);
+			}
+			include($this->template);
+			$content = ob_get_contents();
+			ob_end_clean();
 		}
-		include($this->template);
-		$content = ob_get_contents();
-		ob_end_clean();
 		return $content;
 	}
 
 
+	/**
+	 *	@brief		Méthode de detection du format json
+	 *	@return 	bool	Renvoi si le template courant est en mode json
+	 *
+	 */
+
+	public function isFormatJson() {
+		return ($this->format == 'json');
+	}
+
+
+	/**
+	 *	@brief	Methode permettant de render du json
+	 *
+	 */
+
+	public function getJsonDataForApi() {
+	
+		if (isset($this->data['datasForApi'])) {
+			return json_encode($this->data['datasForApi']);		
+		} else {
+			return false;
+		}
+	}
+
+
+
+
+	/**
+	 *	@brief		Méthode statique de partage de proprietés
+	 *	@details	Partage des propriétés generiques entre classe qui extends de CoreController
+	 *
+	 */
+
 	public static function share($from, $to) {
-		$to->setAction($from->action);
-		$to->setModule($from->module);	
+		$to->setAction($from->getAction());
+		$to->setModule($from->getModule());
+		$to->setFormat($from->getFormat());
+		
 	}
 	
 	
-	public static function controllerExists($controller) {
+	/**
+	 *	@brief		Methode de verification de l'existance d'une classe
+	 *	@details	Methode qui determine si le fichier d'une classe existe
+	 *				Selon la regle suivante: les séparateurs type "_" sont les separateurs de dossier: '/'
+	 *				puis le tout est ramené en minuscules, puis on cherche l'existance d'abord 
+	 *				dans PATH_CORE_CONTROLLER puis dans PATH_CUSTOM_CONTROLLER
+	 *
+	 *	@return		bool	Renvoi vrai si inclusion reussi et false sinon
+	 */
 	
+	public static function controllerExists($controller) {	
 		$path = "";		
 		$explode = explode("_",$controller);
 		$filename = strtolower(array_pop($explode));
@@ -145,7 +263,6 @@ class CoreController {
 				$path .= strtolower($ex) . '/';
 			}
 		}
-		
 		if (file_exists(PATH_CORE_CONTROLLER . $path . $filename . '.php')) {
 			return true;
 		} elseif (file_exists(PATH_CUSTOM_CONTROLLER . $path . $filename . '.php')) {

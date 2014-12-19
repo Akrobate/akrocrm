@@ -5,11 +5,12 @@ class DataAdapter {
 
 
 	public static $allowedfields = array('text', 'join', 'largetext', 'photourl', 'date');
+	
 	/**
 	 * 
 	 */
 
-	public static function dataFieldsAdapter($data, $fieldslist, $fieldaction = 'view', $rendered = false){
+	public static function dataFieldsAdapter($data, $fieldslist, $fieldaction = 'view', $rendered = false, $format = ""){
 		$ret = array();
 		foreach($data as $field => $value) {
 			if (isset($fieldslist[$field])) {
@@ -26,6 +27,11 @@ class DataAdapter {
 				$obj->setAllFieldsParams($field, $fieldslist[$field]);
 				$obj->setValue($value);	
 				$obj->setAction($fieldaction);
+				
+				if (!empty($format)) {
+					$obj->setFormat($format);
+				}
+				
 				if ($rendered == 'rendered') {
 					$ret[$field] = $obj->renderSTR();
 				} else {

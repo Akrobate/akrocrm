@@ -220,8 +220,7 @@ class MyMail {
 			$fromMail =  $this->username;	
 			$toMail = $to;
 			
-			$mail->SetFrom($fromMail, "user name");
-						
+			$mail->SetFrom($fromMail, "user name");		
 			$mail->Subject = $title;
 
 			//$mail->AltBody    = "To view the message, please use an HTML compatible email viewer!"; // optional, comment out and test
@@ -233,17 +232,7 @@ class MyMail {
 			  $result = $mail->ErrorInfo;
 			} else {
 			  $result = true;
-			}   
-			
+			}   	
 			return $result;	
-		}
-		
-		
-	
-		
-		
-		
-		
+		}		
 }
-
-

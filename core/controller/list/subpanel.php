@@ -10,9 +10,9 @@ class List_Subpanel extends CoreController {
 
 		$list->setFilter($this->filter);
 		$list->setNbr($list->nbr);
-				
-		$listContent = $list->renderSTR();
 
+		$listContent = $list->renderSTR();
+		$start = 0;
 		$this->assign('total', $list->total);
 		$this->assign('start', $start);
 		$this->assign('list', $listContent);
