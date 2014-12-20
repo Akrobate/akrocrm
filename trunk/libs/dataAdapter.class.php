@@ -1,14 +1,18 @@
 <?
-
+	
+/**
+ *	Classe d'adaptation des datas en leur présentation finale
+ *		legerement inspiré du principe des listAdapter sous Androids
+ *
+ *	@author		Artiom FEDOROV
+ *	@date		20/12/2014
+ */
 
 class DataAdapter {
 
 
 	public static $allowedfields = array('text', 'join', 'largetext', 'photourl', 'date');
-	
-	/**
-	 * 
-	 */
+
 
 	public static function dataFieldsAdapter($data, $fieldslist, $fieldaction = 'view', $rendered = false, $format = ""){
 		$ret = array();

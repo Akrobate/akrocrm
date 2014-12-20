@@ -1,14 +1,15 @@
 <?php
 
 /**
- *	@brief	Classe dont extends quasi tous les controlleurs de l'application
  *	Cette classe gere l'inclusion des templates
+ *	
+ *	@brief	Classe dont extends quasi tous les controlleurs de l'application
+ *	
  *	@author	Artiom FEDOROV
- *
+ *	@date	19/12/2014
  */
 
 class CoreController {
-
 
 	public $action;
 	public $module;
@@ -17,6 +18,12 @@ class CoreController {
 	public $data;
 
 	public static $headressources = array();
+	
+	/**
+	 *	Constructeur de classe
+	 *	@brief	Constructeur du CoreController
+	 *	@details	Appelle l'autoload des du template pour set le template
+	 */
 
 	public function __construct() {
 		$this->autoloadTemplate();
@@ -24,8 +31,17 @@ class CoreController {
 
 
 	// Concu pour les fields Devra bouger d'ici dans fields.php ici une methode plus generique
-	
-	
+
+	/**
+	 *	Méthode destinée a gerer l'autolaod des js
+	 *
+	 *	@brief		Methode qui inclut les js dans les path par defaut
+	 *	@param		js	Prend en parametre le nom du script js a inclure
+	 *	@details	Prend le nom du js explode le nom de la classe pour 
+	 *				avoir le path et inclut le fichier js dans le chemin 
+	 *				equivalent pour les js
+	 */
+	 		
 	public function addJS($js = "")	{
 
 		if ($js == "") {
@@ -64,6 +80,13 @@ class CoreController {
 
 	}
 
+
+	/**
+	 *	Méthode destinée a gerer l'autolaod des templates
+	 *	@brief		Methode appelé par le render pour inclure le bon template
+	 *	@details	Prends le nom de la classe l'explode selon separateur _ et remplace par le separateur de chemin
+	 */
+	 
 	public function autoloadTemplate() {
 	
 		$classname = get_class($this);
@@ -119,6 +142,17 @@ class CoreController {
 
 
 	/**
+	 *	@brief		Setteur de template
+	 *	@return		this Renvoi la classe courantes
+	 */
+
+	public function setTemplate($tpl) {
+		$this->template = $tpl;
+		return $this;		
+	}
+	
+	
+	/**
 	 *	@brief		Getteur d'action
 	 *	@return		string Renvoi le nom de l'action
 	 */
@@ -147,17 +181,26 @@ class CoreController {
 		return $this->format;
 	}
 
-	public function setTemplate($tpl) {
-		$this->template = $tpl;
-		return $this;		
-	}
 
+	/**
+	 *	@brief		Assigne la variable
+	 *	@details	Assigne la variable pour un usage dans les templates
+	 *	@return		this Renvoi la classe courantes
+	 */
 
 	public function assign($name,$val) {
 		$this->data[$name] = $val;
 		return $this;		
 	}
 	
+	
+	/**
+	 *	@brief		Getteur de variables de template
+	 *	@details	Retourne la variable si celle la existe
+	 *	@param		name	Nom de la variable de template a renvoyer
+	 *	@return		string	Retourne la variable si celle la existe
+	 */
+	 
 	public function getvar($name) {
 		return $this->data[$name];
 	}	
