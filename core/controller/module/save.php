@@ -21,7 +21,9 @@ class Module_Save extends CoreController {
 			$data['id'] = $id;
 		}
 		
+
 		$rez = $orm->upsert($this->getModule(), $allFields, $data);	
+//		print_r($rez);
 		
 		if ($rez['id'] != 0) {
 			$id = $rez['id'];

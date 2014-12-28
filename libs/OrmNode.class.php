@@ -75,6 +75,33 @@ class OrmNode extends DataAdapter {
 
 
 	/**
+	 *	Methode de recherche de datas
+	 *	@brief	Recupere la data depuis la table module selon les fields	
+	 *	@param	module	Le nom du module (nom de la table)
+	 *	@param	fields	L'id de l'enregistrement a recuperer
+	 *	@return	Array	Renvoi l'array de l'enregistrement
+	 */
+
+	public static function findDataFromFields($module, $fields = array(), $concat = "OR") {
+	
+		$query = "SELECT * FROM $module WHERE ";
+		$i = count($fields);
+		foreach($fields as $field => $val) {
+			$query .= " " . $field . " = '" . $val . "' ";
+			$i--;
+			if ($i != 0) {
+				$query .= $concat . " ";
+			}
+		}
+		
+		echo($query);
+		
+		sql::query($query);
+		return sql::allFetchArray();
+	}
+
+
+	/**
 	 *	Methode permettant d'ajouter une jointure
 	 *
 	 */
@@ -222,7 +249,7 @@ class OrmNode extends DataAdapter {
 		if (isset($data['id']) && ($data['id'] != 0)) {
 		
 			foreach($fields as $field) {
-				$data_string .= $field . '=' . sql::escapeString( $data_string_array[$field] ) . ',';
+				$data_string .= $field . '= ' .  $data_string_array[$field]  . ',';
 			}
 			$data_string = substr($data_string, 0, -1);
 			$query = 'UPDATE ' . $module . ' SET '. $data_string . ' WHERE id=' . $data['id'];	

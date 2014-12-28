@@ -1,15 +1,18 @@
 <div class="table-responsive">
   <table class="table">
-	<th>
+	<tr>
 		<? if(isset($datas[0])): ?>
 			<? foreach(@$datas[0] as $k => $f): ?>
-				<td>
-					<?=$k?>
-				</td>
+				<th>
+					<?if(isset($fieldList[$k]['label'])): ?>
+						<?=$fieldList[$k]['label'] ?>
+					<? else: ?>
+						<?=$k?>					
+					<? endif; ?>
+				</th>
 			<? endforeach; ?>
 		<? endif; ?>
-	</th>
-	
+	</tr>
 	<? foreach(@$datas as $data): ?>
 		<tr>
 			<? foreach(@$data as $field): ?>
