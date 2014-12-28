@@ -1,11 +1,13 @@
 <?php
 
 /**
- * @brief		Classe users permettant de generer les utilisateurs et l'authentification
+ * @brief		Classe users permettant de gerer les utilisateurs et l'authentification
  * @details		Connection, deconnection, gestion de la session, tentatives de connection
  *					Classe qui va effectuer toutes les opérations d'authentification gestion des profils
- *				
+ *					Gestion de la sessions etc etc
+ *
  * @author		Artiom FEDOROV
+ * @date	2014
  *
  */
  
@@ -25,6 +27,7 @@ class users {
 	/**
 	 * @brief		Verifie si l'id user est set dans la session
 	 * @return    bool		Renvoir true si session set, et false sinon
+	 *
 	 */
 	
 	public static function issetId() {
@@ -36,6 +39,7 @@ class users {
 	 * @brief		Recupere le user id de l'utilisateur courant
 	 * @details		Récupère en session  (actuellement connecté)
 	 * @return    int		Renvoi l'id de l'utilisateur courant
+	 *
 	 */
 	
 	public static function getId() {
@@ -50,10 +54,12 @@ class users {
 	 * @param	login		Nom d'utilisateur 
 	 * @param	pw			Mot de passe de l'utilsateur
 	 * @return	bool		Renvoi true si utilisateur connecté, false sinon
+	 *
 	 */
 	 
 	public static function connect($login, $pw) {
 		if( (ADMIN_LOGIN == $login) && (ADMIN_PASSWORD == $pw)) {		
+			// Si l'utilisateur est admin alors on charge sa conf de manière artificielle (avec des fichiers)
 			self::$connected = true;
 			$_SESSION['user']['connected'] = true;
 			return true;
@@ -85,7 +91,6 @@ class users {
 	 */
 	 		
 	public static function getMe() {
-	
 		if (isset($_SESSION['user'])) {
 			self::$me = $_SESSION['user'];
 		}
@@ -108,7 +113,6 @@ class users {
 			self::loadProfile();
 		}
 		return self::$profile;
-	
 	}
 
 
@@ -116,6 +120,7 @@ class users {
 	 * @brief		Charge le profil pour l'utilisateur
 	 * @details		Récupère le profil depuis un fichier pour l'admin et depuis la base pour un utilisateur quelconque
 	 * @return	Array	Renvoi un tableau contenant les informations du profil de l'utilisateur, false si pas de profil
+	 *
 	 */
 	 
 	public static function loadProfile() {
@@ -141,6 +146,7 @@ class users {
 	 * @brief		Methode de déconnection
 	 * @details		Méthode de déconnection qui unset l'ensemble des données de la session, *
 	 * @return	bool	Renvoi true si bien déconnecté
+	 *
 	 */
 
 	public static function logout() {

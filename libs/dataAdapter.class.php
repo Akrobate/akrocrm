@@ -10,12 +10,16 @@
 
 class DataAdapter {
 
-
+	// Liste des champs autorisés a l'affichage
+	
 	public static $allowedfields = array('text', 'join', 'largetext', 'photourl', 'date');
 
 
 	/**
 	 *	Methode permettant d'afficher les champs dans le mode d'action désiré
+	 *	@brief Methode permetant de réaliser une adaptation entre les dataFields et la vue
+	 *	@param	data	Données passées en parametre pour l'affichage
+	 *	@param	fieldslist	Liste de champs a render
 	 *
 	 */
 
@@ -104,9 +108,56 @@ class DataAdapter {
 			} else if (file_exists(PATH_CORE_INTERNAL_MODULES . $module . "/fields.php")) {
 				include(PATH_CORE_INTERNAL_MODULES . $module . "/fields.php");
 			}
+			$fields = self::enrichFieldsWithTypes($fields);
 			return $fields;
 		}
 	}
+	
+	
+	/**
+	 *	Methode permettant d'enrichier la liste des champs aveec les types
+	 *	@param	module	Nom du module pour la recuperation de la liste des champs
+	 *	@return	Array	Renvoi l'array déclaré dans l'include
+	 *	
+	 */
+	 
+	public static function enrichFieldsWithTypes($fields) {
+	
+		$retFields = array();
+		foreach ($fields as $fieldname => $fields) {
+			$retFields[$fieldname] = $fields;
+			if (! isset ($retFields[$fieldname]['typeSQL'])) {
+				$retFields[$fieldname]['typeSQL'] = self::getSqlTypeFromStdType($fields['type']);
+			}
+		}
+		return $retFields;
+	}	
+	
+	/**
+	 *	Renvoie le typeSQL en fonction de types
+	 *  array('text', 'join', 'largetext', 'photourl', 'date');
+	 */
 
+	public static function getSqlTypeFromStdType($type) {
+		$resp = "";
+		switch ($type) {
+			case "text":
+				$resp = "VARCHAR(255)";
+				break;
+			case "largetext":
+				$resp = "TEXT";
+				break;
+			case "photourl":
+				$resp = "VARCHAR(255)";
+				break;
+			case "date":
+				$resp = "DATE";
+				break;
+			case "join":
+				$resp = "INT(11)";
+				break;						
+		}
+		return $resp;
+	}
 
 }

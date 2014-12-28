@@ -125,10 +125,13 @@ class OrmNode extends DataAdapter {
 		foreach($data as $d) {
 			$ret[$d[$field]] = $d[$field];
 		}
-		//print_r($ret);
 		return $ret;
 	}
 	
+	
+	/**
+	 *	Methode permettant de rajouter au set de data les join data
+	 */
 	
 	public static function glueJoinDataToData(&$data, $joindata, $field) {
 		foreach($data as &$d) {

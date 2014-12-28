@@ -14,25 +14,21 @@
 
 $fields = array(
 	'email' => array(
-						'typeSQL' => 'VARCHAR(255)',
 						'type' => 'text',
 						'label' => 'E-Mail'					
 						),
 						
 	'login' => array(
-						'typeSQL' => 'VARCHAR(255)',
 						'type' => 'text',
 						'label' => 'Votre login'					
 						),
 
 	'password' => array(
-						'typeSQL' => 'VARCHAR(255)',
 						'type' => 'text',
 						'label' => 'Mot de passe'			
 						),
 
 	'id_profil' => array(
-						'typeSQL' => 'INT(11)',
 						'type' => 'join',
 						'label' => 'Profil join',
 						'join' => array(
@@ -43,15 +39,12 @@ $fields = array(
 						),
 
 	'email_login' => array(
-						'typeSQL' => 'VARCHAR(255)',
 						'type' => 'text',
 						'label' => 'Email Login'					
 						),
 												
 	'email_password' => array(
-						'typeSQL' => 'VARCHAR(255)',
 						'type' => 'text',
 						'label' => 'Email Mot de passe'					
 						)
-					);
-						
+					);						
