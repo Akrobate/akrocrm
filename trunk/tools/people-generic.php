@@ -49,7 +49,14 @@ if (in_array("--people", $argv)) {
 		}
 	}
 	
-	// People joins
+	/**
+	 *	Partie du Script de build des jointures du CRM
+	 *	
+	 *	@brief		Script permettant de les jointures du CRM
+	 *	@details	Peuple toutes les tables avec les jointures du CRM
+	 *	
+	 */
+	 
 	foreach($dirs as $dir) {	
 		if($dir != 'contacts') {
 			$fields = OrmNode::getFieldsFor($dir);
