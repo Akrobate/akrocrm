@@ -176,5 +176,20 @@ class DataAdapter {
 		$allFields = array_keys($fields);
 		return $allFields;
 	}
-
+	
+	
+	/**
+	 *	Methode permettant de recuperer le label pour un champ
+	 *	@param	field
+	 *	@return	String
+	 *	
+	 */
+	
+	public static function getFieldLabel($field, $module) {
+		if (!empty($module)){
+			$fields = self::getFieldsFor($module);
+			return $fields[$field]['label'];
+		}
+		return "";
+	}
 }

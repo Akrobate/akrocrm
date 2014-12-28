@@ -29,43 +29,47 @@ class List_Frameview extends CoreController {
 		$commande = request::get('commande');
 		$start = request::get('start');
 		
+		// Si le filtre n'est pas set alors je recupere celui dans l'url
 		if (!$this->filter) {
 			$filter = request::get('filter');
 			$this->setFilter($filter);
-		}
-		
-		if ($this->nbr) {
-			$list->nbr = $this->nbr;
-		}
-
-		
+		} 
+			
 		$list->setFilter($this->filter);
 		
+		if ($this->nbr) {
+			$list->setNbr($this->nbr);
+		}
+
 		if ($start == "") {
 			$start = 0;
 		}
-			
-		if ($commande == 'next') {
-			$start += $list->nbr;
-		} elseif ($commande == 'prev') {
-			$start -= $list->nbr;
-		}
 		
-		if ($start < 0) {
-			$start = 0;
-		}
+		$prevStart = $start - $list->nbr;		
+		$nextStart = $start + $list->nbr;
 		
 		$list->setStart($start);
-		
-		$list->setNbr($list->nbr);		
 		$listContent = $list->renderSTR();
-
-		if ($start >= $list->total) {
-			$start = $list->total - $list->nbr;
+		
+		if ($list->total < $list->nbr) {
+			$nextStart = $start;
 		}
+		
+		if ($start + $list->nbr > $list->total) {
+			$nextStart = $start;
+		}
+		
+		if ($start - $list->nbr < 0) {
+			$prevStart = $start;
+		}
+		
 		$this->setTotal($list->total);
 		$this->assign('total', $list->total);
 		$this->assign('start', $start);
+		
+		$this->assign('nextStart', $nextStart);
+		$this->assign('prevStart', $prevStart);
+				
 		$this->assign('list', $listContent);
 		$this->assign('mainmodule', ucfirst($modules));		
 	}
