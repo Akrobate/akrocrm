@@ -10,6 +10,20 @@
 class sqlAdvanced {
 
 
+
+	/**
+	 * @brief		Affiche toutes les tables
+	 * @details		Affiche les tables 
+	 * @return	Array contenant l'ensemble des tables
+	 */
+	 
+	public static function showAllTables() {
+		$query="SHOW TABLES";
+		self::query($query);
+		return self::allFetchArray();	
+	}
+
+
 	/**
 	 * @brief		Methode qui permet la creation d'une table
 	 * @details		

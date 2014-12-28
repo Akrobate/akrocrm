@@ -28,9 +28,7 @@ class CoreController {
 	public function __construct() {
 		$this->autoloadTemplate();
 	}
-
-
-	// Concu pour les fields Devra bouger d'ici dans fields.php ici une methode plus generique
+	
 
 	/**
 	 *	Méthode destinée a gerer l'autolaod des js
@@ -81,7 +79,7 @@ class CoreController {
 	}
 
 
-	/**
+	/**s
 	 *	Méthode destinée a gerer l'autolaod des templates
 	 *	@brief		Methode appelé par le render pour inclure le bon template
 	 *	@details	Prends le nom de la classe l'explode selon separateur _ et remplace par le separateur de chemin
@@ -271,12 +269,11 @@ class CoreController {
 	}
 
 
-
-
 	/**
 	 *	@brief		Méthode statique de partage de proprietés
 	 *	@details	Partage des propriétés generiques entre classe qui extends de CoreController
-	 *
+	 *	@param	from	CoreController Object	D'ou l'on copie
+	 *	@param	to		CoreController vers leque on copie les proprietes
 	 */
 
 	public static function share($from, $to) {
@@ -306,6 +303,7 @@ class CoreController {
 				$path .= strtolower($ex) . '/';
 			}
 		}
+		
 		if (file_exists(PATH_CORE_CONTROLLER . $path . $filename . '.php')) {
 			return true;
 		} elseif (file_exists(PATH_CUSTOM_CONTROLLER . $path . $filename . '.php')) {

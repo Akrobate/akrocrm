@@ -159,5 +159,22 @@ class DataAdapter {
 		}
 		return $resp;
 	}
+	
+		
+	/**
+	 *	@brief	Renvoi la liste des clefs d'un module
+	 *	@details	Renvoi la liste simple des champs d'un module
+	 *
+	 *	@param	module	Nom du module a interroger
+	 *	@return Arra	Tableau contenant la liste des champs du module
+	 *				Ex: array('nom','prenom', etc);
+	 =
+	 */
+	 
+	public static function getFields($module) {	
+		$fields = self::getFieldsFor($module);
+		$allFields = array_keys($fields);
+		return $allFields;
+	}
 
 }
