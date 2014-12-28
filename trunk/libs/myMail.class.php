@@ -12,15 +12,18 @@
  
 class MyMail {
 
+	// Parametres de connection
 	private $hostname;
 	private $username;
 	private $password;
 
 
+	/**
+	 * @brief		Constructeur 
+	 */
+	 
 	function __construct() {		
-		//$this->hostname = MAIL_HOST;
-		//$this->username = MAIL_USER;
-		//$this->password = MAIL_PASSWORD;
+	
 	}
 	
 	
@@ -28,6 +31,7 @@ class MyMail {
 	 * @brief		setteur du login 
 	 * @param	username	prend en parametre le login
 	 * @return	this	renvoi l'objet courant
+	 *
 	 */
 	
 	public function setUsername($username) {
@@ -40,6 +44,7 @@ class MyMail {
 	 * @brief		setteur du password de la messagerie 
 	 * @param	pw	prend en parametre le password
 	 * @return	this	renvoi l'objet courant
+	 *
 	 */
 	
 	public function setPassword($pw) {
@@ -52,6 +57,7 @@ class MyMail {
 	 * @brief		setteur du host de la messagerie 
 	 * @param	host	prend en parametre le host
 	 * @return	this	renvoi l'objet courant
+	 *
 	 */
 	
 	public function setHost($host) {
@@ -64,12 +70,12 @@ class MyMail {
 	 * @brief		Methode qui releve tous les nouveaux mails
 	 * @param	host	Releve tous les nouveaux mails
 	 * @return	array 	Renvoi le tableau contenant l'ensemble des mails
+	 *
 	 */
 	
 	public function getNew() {
 		$res = array();
 
-		/* try to connect */
 		$inbox = imap_open($this->hostname,$this->username,$this->password)
 			 or die('Cannot connect to Gmail: ' . imap_last_error());
 			 
@@ -92,13 +98,11 @@ class MyMail {
 			$res[] = $data;
 		  }
 		}
-
-		/* close the connection */
+		
 		imap_close($inbox);
 
 		return $res;
-		/* put the newest emails on top */
-		//rsort($emails);
+
 	}
 	
 	
@@ -108,6 +112,7 @@ class MyMail {
 	 * @param	realydelete	si true alors on vide la corbeille des mails
 	 *						si false alors les mails sont conservés dans la corbeille
 	 * @return	array 	Renvoi le tableau contenant l'ensemble des mails
+	 *
 	 */
 	
 	public function getAllAndRemove($realydelete = true) {
@@ -177,14 +182,33 @@ class MyMail {
 	}
 	
 	
+	/**
+	 * @brief		Methode qui envoie un mail templaté
+	 * @details		envoi un mail avec un modele 
+	 * @param	tplname		Nom du template a envoyer
+	 * @param	data	Array contenant les datas pour le tmeplate
+	 * @return	bool	True si succes false sinon 	
+	 *
+	 */
+	 	
 	public function SendTemplatedMail($tplname, $data) {
 	
 		$msg = $this->MailTemplate($tplname, $data);
-		//return $this->sendMail($data['to'], $data['subject'], $msg);
 		return $this->sendMailGmail($data['to'], $data['subject'], $msg);
 	}
 	
 	
+	/**
+	 * @brief		Methode Simple d'envoi mail
+	 * @details		Methode simplissime 
+	 *
+	 * @param	to	Mail du destinataire
+	 * @param	subject	String Objet de mon mail
+	 * @param	message	String Message a envoyer
+	 *
+	 * @return	bool	True si succes false sinon 	
+	 *
+	 */
 	
 	public function sendMail($to, $subject, $message) {
 		$status = imap_mail ($to , $subject , $message);
@@ -192,9 +216,19 @@ class MyMail {
 	}
 	
 	
-	public function MailTemplate($tplname, $data) {
+	/**
+	 * @brief		Methode qui embade les datas dans le tplname
+	 * @details		Equivalent d'un render
+	 *
+	 * @param	tplname	path vers le template a utiliser
+	 * @param	data	Variables pour le template
+	 *
+	 * @return	string	Renvoi la chaine de carracteres correspondant a l'email rendu
+	 *
+	 */
 	
-		// Variable md comme maildata
+	public function MailTemplate($tplname, $data) {
+
 		$md = $data;
 		ob_start();
 			include(PATH_TEMPLATES . "mails/". $tplname .".php");
@@ -205,37 +239,49 @@ class MyMail {
 	}
 	
 	
+	
+	/**
+	 * @brief		Methode Complexe d'envoi mail
+	 * @details		Methode utilisant PHPMailer 
+	 *
+	 * @param	to	Mail du destinataire
+	 * @param	title	String Objet de mon mail
+	 * @param	message	String Message a envoyer
+	 *
+	 * @return	bool	True si succes false sinon 	
+	 *
+	 */
+	
 	public function sendMailGmail($to, $title, $message) {
+	
+		$mail = new PHPMailer();
+		$mail->IsSMTP();
+		$mail->Host = "ssl://smtp.gmail.com"; 
+		$mail->SMTPDebug = 1;                     
+        // 2 = messages only
+		$mail->SMTPAuth = true;
+		$mail->SMTPSecure = "ssl";
+		$mail->Host = "smtp.gmail.com";
+		$mail->Port = 465;
+
+		$mail->Username   = $this->username; 
+		$mail->Password   = $this->password;
+	
+		$fromMail =  $this->username;	
+		$toMail = $to;
 		
-			$mail = new PHPMailer();
-			$mail->IsSMTP();
-			$mail->Host = "ssl://smtp.gmail.com"; 
-			$mail->SMTPDebug = 1;                     
-            // 2 = messages only
-			$mail->SMTPAuth = true;
-			$mail->SMTPSecure = "ssl";
-			$mail->Host = "smtp.gmail.com";
-			$mail->Port = 465;
+		$mail->SetFrom($fromMail, "user name");		
+		$mail->Subject = $title;
+		//$mail->AltBody    = "To view the message, please use an HTML compatible email viewer!"; // optional, comment out and test
+		$mail->MsgHTML($message);
+		$mail->AddAddress($toMail, $toMail);
+		//$mail->AddAttachment("images/phpmailer.gif");      // attachment
 
-			$mail->Username   = $this->username; 
-			$mail->Password   = $this->password;
-		
-			$fromMail =  $this->username;	
-			$toMail = $to;
-			
-			$mail->SetFrom($fromMail, "user name");		
-			$mail->Subject = $title;
-
-			//$mail->AltBody    = "To view the message, please use an HTML compatible email viewer!"; // optional, comment out and test
-			$mail->MsgHTML($message);
-			$mail->AddAddress($toMail, $toMail);
-			//$mail->AddAttachment("images/phpmailer.gif");      // attachment
-
-			if(!$mail->Send()) {
-			  $result = $mail->ErrorInfo;
-			} else {
-			  $result = true;
-			}   	
-			return $result;	
-		}		
+		if(!$mail->Send()) {
+		  $result = $mail->ErrorInfo;
+		} else {
+		  $result = true;
+		}   	
+		return $result;	
+	}
 }

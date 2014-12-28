@@ -1,5 +1,14 @@
 <?php
 
+/**
+ *	Classe qui controlle les champs de manière generique
+ *	Cette classe est un extends pour les types de champs 
+ *	Particuliers comme dans le dossier ./fields
+ *
+ *	@author Artiom FEDOROV
+ *	@date 2014
+ *
+ */
 
 class Field extends CoreController{
 
@@ -44,6 +53,14 @@ class Field extends CoreController{
 		$this->autoloadTemplateField();
 	}
 	
+	
+	/**
+	 *	Methode permettant de réaliser l'autoload du template
+	 *	du champ initialisé
+	 *
+	 */
+	
+	
 	public function autoloadTemplateField() {
 		$classname = get_class($this);
 		$exp = explode("_", strtolower($classname));
@@ -53,7 +70,7 @@ class Field extends CoreController{
 	}
 
 	
-	/* Non finalisé */
+	/* @TODO Non finalisé */
 	
 	public function isJoin() {
 		

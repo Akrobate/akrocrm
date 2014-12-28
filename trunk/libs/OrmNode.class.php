@@ -2,10 +2,12 @@
 
 
 /**
- *	Classe qui represente un data Node
+ *	Classe qui represente un dataNode
+ *
  *	@author Artiom FEDOROV
  *
  */
+
 
 class OrmNode extends DataAdapter {
 
@@ -20,6 +22,11 @@ class OrmNode extends DataAdapter {
 	public $total;
 	
 	
+	/**
+	 *	@brief	Constructeur de classe
+	 *	@details	Initialise certaines valeures
+	 */
+	 
 	public function __construct() {
 		$this->start_limit = 0;
 		$this->nbr_limit = 10;
@@ -27,25 +34,29 @@ class OrmNode extends DataAdapter {
 	}
 
 	
+	/**
+	 *	@brief	Setteur de filtre
+	 *	@details	Pour la gestion de collections de données
+	 *	@param	filter	Le filtre a set
+	 *	@return this	Pour le chainage
+	 */
+	 
 	public function setFilter($filter) {
 		$this->filter = $filter;
+		return $this;
 	}
 
 
+	/**
+	 *	@brief	Getteur d'objets
+	 *	@details	Renvoi toutes les noms des tables 
+	 *	@return 	Array	Contenant la liste des modules (depuis les tables, non dossiers)
+	 */
 	
 	public static function getAllObj() {
-		$query="SHOW TABLES";
-		sql::query($query);
-		return sql::allFetchArray();	
+		return sql::showAllTables();
 	}
 	
-	
-	public static function getFields($module) {	
-		$fields = self::getFieldsFor($module);
-		$allFields = array_keys($fields);
-		return $allFields;
-	}
-
 
 	/**
 	 *	Methode de recuperation des datas
@@ -63,10 +74,24 @@ class OrmNode extends DataAdapter {
 	}
 
 
+	/**
+	 *	Methode permettant d'ajouter une jointure
+	 *
+	 */
+	 
 	public static function addJoin($table) {
 		self::$joins = $table;
 	}
 
+
+	/**
+	 *	Methode de recuperation des datas en mode liste avec jointures 1-n
+	 *	@brief	Recupere les datas depuis la table module avec jointures
+	 *	@param	module	Le nom du module (nom de la table)
+	 *	@param	listFields	Les champs a recuperer
+	 *	@return	Array	Renvoi l'array l'ensemble des datas
+	 *
+	 */
 
 	public function getAllDataWithJoins($module, $listFields = array()) {
 		$content = $this->getAllData($module, $listFields);	
@@ -81,6 +106,16 @@ class OrmNode extends DataAdapter {
 		return $content;
 	}
 
+
+
+	/**
+	 *	Methode de recuperation des datas en mode liste
+	 *	@brief	Recupere les datas depuis la table module
+	 *	@param	module	Le nom du module (nom de la table)
+	 *	@param	fields	Les champs a recuperer
+	 *	@return	Array	Renvoi l'array l'ensemble des datas
+	 *
+	 */
 
 	public function getAllData($module, $fields = array()) {
 		if (isset($this->filter) && $this->filter != '') {
@@ -106,6 +141,15 @@ class OrmNode extends DataAdapter {
 	}
 
 
+	/**
+	 *	Methode de recuperation des datas a joindre
+	 *	@brief	Recupere les datas de la jointure
+	 *	@param	module	Le nom du module a joindre
+	 *	@param	id	Array prends en parametre l'array d'ids dont on a besoin de jointure
+	 *	@return	Array	Renvoi l'array l'ensemble des datas de jointure
+	 *
+	 */
+	 
 	public static function getJoinData($module, $id = array() ) {
 		$query = "SELECT * FROM $module WHERE id IN (";
 		$query .= implode(',', $id) ;
@@ -119,6 +163,13 @@ class OrmNode extends DataAdapter {
 		return $data2;
 	}
 	
+	
+	/**
+	 *	Methode de recuperation de la liste des champs depuis un dataset
+	 *	@brief	Recupere la liste des clefs de champs de data
+	 *	@param	data	Ensemble de données consernée
+	 *
+	 */	
 	
 	public static function getFieldListFromDataSet($data, $field) {
 		$ret = array();
