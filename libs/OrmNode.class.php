@@ -60,10 +60,12 @@ class OrmNode extends DataAdapter {
 
 	/**
 	 *	Methode de recuperation des datas
+	 *
 	 *	@brief	Recupere la data depuis la table module	
 	 *	@param	module	Le nom du module (nom de la table)
 	 *	@param	id		L'id de l'enregistrement a recuperer
 	 *	@return	Array	Renvoi l'array de l'enregistrement
+	 *
 	 */
 
 	public static function getData($module, $id) {
@@ -76,10 +78,12 @@ class OrmNode extends DataAdapter {
 
 	/**
 	 *	Methode de recherche de datas
+	 *
 	 *	@brief	Recupere la data depuis la table module selon les fields	
 	 *	@param	module	Le nom du module (nom de la table)
-	 *	@param	fields	L'id de l'enregistrement a recuperer
+	 *	@param	fields	liste des champs et valeurs pour la rechercher
 	 *	@return	Array	Renvoi l'array de l'enregistrement
+	 *
 	 */
 
 	public static function findDataFromFields($module, $fields = array(), $concat = "OR") {
@@ -93,9 +97,7 @@ class OrmNode extends DataAdapter {
 				$query .= $concat . " ";
 			}
 		}
-		
 		echo($query);
-		
 		sql::query($query);
 		return sql::allFetchArray();
 	}
@@ -103,6 +105,7 @@ class OrmNode extends DataAdapter {
 
 	/**
 	 *	Methode permettant d'ajouter une jointure
+	 *	@brief Ajoute une jointure
 	 *
 	 */
 	 
@@ -113,6 +116,7 @@ class OrmNode extends DataAdapter {
 
 	/**
 	 *	Methode de recuperation des datas en mode liste avec jointures 1-n
+	 *
 	 *	@brief	Recupere les datas depuis la table module avec jointures
 	 *	@param	module	Le nom du module (nom de la table)
 	 *	@param	listFields	Les champs a recuperer
@@ -137,6 +141,7 @@ class OrmNode extends DataAdapter {
 
 	/**
 	 *	Methode de recuperation des datas en mode liste
+	 *
 	 *	@brief	Recupere les datas depuis la table module
 	 *	@param	module	Le nom du module (nom de la table)
 	 *	@param	fields	Les champs a recuperer
@@ -170,6 +175,7 @@ class OrmNode extends DataAdapter {
 
 	/**
 	 *	Methode de recuperation des datas a joindre
+	 *
 	 *	@brief	Recupere les datas de la jointure
 	 *	@param	module	Le nom du module a joindre
 	 *	@param	id	Array prends en parametre l'array d'ids dont on a besoin de jointure
@@ -193,8 +199,10 @@ class OrmNode extends DataAdapter {
 	
 	/**
 	 *	Methode de recuperation de la liste des champs depuis un dataset
+	 *
 	 *	@brief	Recupere la liste des clefs de champs de data
 	 *	@param	data	Ensemble de données consernée
+	 *	@return Array	Renvoi Field list from data set
 	 *
 	 */	
 	
@@ -209,6 +217,13 @@ class OrmNode extends DataAdapter {
 	
 	/**
 	 *	Methode permettant de rajouter au set de data les join data
+	 *	
+	 *	@brief Joint les datas jointure sur data
+	 *	@param	data	Pointeur vers data
+	 *	@param	joindata	Les datas de jointure
+	 *	@param	field		champ conserné
+	 *	@return data		renvoi les datas enrichies
+	 *
 	 */
 	
 	public static function glueJoinDataToData(&$data, $joindata, $field) {
@@ -223,6 +238,7 @@ class OrmNode extends DataAdapter {
 	
 	/**
 	 *	Methode generique de save de tout module
+	 *
 	 *	@param	module	Le nom du module a sauvegarder (table de destination)
 	 *	@param	fields	Liste de champs a sauvegarder ex: Array('nom','prenom',etc..);
 	 *	@param	data	Array contenant les donnés a sauvegarder ex: Array ('nom' => Jean, 'prenom'=>'Pierre')
@@ -245,7 +261,8 @@ class OrmNode extends DataAdapter {
 				$data_string_array[$field] = '""';		
 			}	
 		}		
-			
+
+		// SI id est set alors il s'agit d'un update			
 		if (isset($data['id']) && ($data['id'] != 0)) {
 		
 			foreach($fields as $field) {
@@ -259,6 +276,7 @@ class OrmNode extends DataAdapter {
 			$response['query'] = $query;
 			
 		} else {
+		// ID not set alors nouvelle création
 			$data_string = implode(',',$data_string_array);
 			$query = 'INSERT INTO ' . $module . ' ('.$fields_string.') VALUES ('. $data_string .');';
 			sql::query($query);			
