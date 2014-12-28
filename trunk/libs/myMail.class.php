@@ -148,6 +148,13 @@ class MyMail {
 	}
 	
 	
+	/**
+	 * @brief		Methode qui supprime un message
+	 * @details		Supprime un message de la boite avec l'id num
+	 * @param	num		Numéro id du message a supprimer
+	 * @return	void 	
+	 *
+	 */
 	
 	
 	public function removeOne($num) {
@@ -180,10 +187,6 @@ class MyMail {
 	
 	
 	public function sendMail($to, $subject, $message) {
-	
-		//$inbox = imap_open($this->hostname, $this->username, $this->password)
-			// or die('Cannot connect to Gmail: ' . imap_last_error());
-	
 		$status = imap_mail ($to , $subject , $message);
 		return $status;
 	}

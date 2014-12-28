@@ -44,11 +44,11 @@ require_once(PATH_LIBS . "OrmNode.class.php");
 require_once(PATH_LIBS . "helper.class.php");	
 require_once(PATH_LIBS . "html.render.class.php");	
 require_once(PATH_LIBS . "core.controller.class.php");
-require_once(PATH_LIBS . "modulemanager.class.php");
+require_once(PATH_LIBS . "moduleManager.class.php");
 require_once(PATH_LIBS . "dataNode.class.php");
 require_once(PATH_LIBS . "users.class.php");
-require_once(PATH_LIBS . "phpmailer.class.php");
-require_once(PATH_LIBS . "mymail.class.php");
+require_once(PATH_LIBS . "phpMailer.class.php");
+require_once(PATH_LIBS . "myMail.class.php");
 	
 require_once(PATH_CURRENT . "routeur.php");
 
