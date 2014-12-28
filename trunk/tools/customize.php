@@ -1,16 +1,25 @@
 <?php
 
-/* USAGE
-clear;php customize.php --module=notes --action=edit
-*/
-
-
+/**
+ *	Script de build du CRM
+ *	
+ *	@brief		Script permettant la customization d'un module
+ *	@details	Effectue une copie complete dans un dossier custom de core/module
+ *
+ *	@usage		clear;php customize.php --module=notes --action=edit
+ *	
+ *	@author 	Artiom FEDOROV
+ */
+ 
+define('PATH_CURRENT', "../");
 require_once("api.php");
 $dirs = scandir(PATH_MODULES);
 error_reporting(15);
 $tree = array();
 sql::display(1);
 
+
+// Traitement des paramètres
 foreach($argv as $a) {
 	if (strpos($a, 'module') !== false) {
 		$exp = explode("=", $a);
@@ -40,8 +49,10 @@ foreach($argv as $a) {
 
 $module = trim(strtolower($module));
 
+// On empece de continuer si on trouve pas de module dans l'arg
 if ($module == "") {
 	exit();
+	echo("No module in param\n");
 }
 
 
@@ -63,6 +74,5 @@ foreach($actions as $action) {
 	$str = str_replace($coreName, $customName, $str);
 	file_put_contents(PATH_CUSTOM_CONTROLLER .  'modules/' . $module . "/" . $action . ".php", $str);
 	echo($customName . "\n");
-
 }
 

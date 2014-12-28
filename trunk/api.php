@@ -8,7 +8,12 @@
 
 	// Definitions des Constantes
 	define ("PATH_SEP", '/');	
-	define ("PATH_CURRENT", "." . PATH_SEP );
+	
+	// Permet la surcharge en amont de path_current pour que tout s'include correctement
+	if (!defined ( "PATH_CURRENT" ) ) {
+		define ("PATH_CURRENT", "." . PATH_SEP );
+	}
+	
 	define ("PATH_CONFIGS", PATH_CURRENT. "config" . PATH_SEP);	
 	define ("PATH_LIBS", PATH_CURRENT . "libs" . PATH_SEP );
 	define ("LIBS_PATH", PATH_CURRENT . "libs" . PATH_SEP );
