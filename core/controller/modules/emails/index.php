@@ -1,6 +1,22 @@
 <?php
 
+/**
+ *	Cette classe est le controlleur qui gere
+ *	Le upload des mails depuis une boite gmail
+ *	ici le user doit obligatoirement etre connecté
+ *	Pour toutes les datas login / PAssword gmail
+ *	
+ *	@author	Artiom FEDOROV
+ *	@date	2014
+ *
+ */
+
 class Modules_Emails_Index extends CoreController {
+
+	/**
+	 *	Surcharge de l'init() et traitements principaux
+	 *	
+	 */
 
 	public function init() {
 
@@ -18,14 +34,14 @@ class Modules_Emails_Index extends CoreController {
 		$client->setPassword($password);
 		$client->setHost($host);
 		
-		
-		$mres = $client->getNew();
-		
+		// Affichage un peu en mode debug
+		$mres = $client->getNew();	
 		$listContent = "<pre>";
 		$listContent .= print_r($user, 1);
 		$listContent .= print_r($mres, 1);
 		$listContent .= "</pre>";
 		
+		// Assignation de toutes les données
 		$this->assign('listContent', $listContent);
 	}
 }
