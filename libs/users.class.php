@@ -6,13 +6,19 @@
  *					Classe qui va effectuer toutes les opérations d'authentification gestion des profils
  *				
  * @author		Artiom FEDOROV
+ *
  */
  
  
 class users {
 
+	// Variable permettant de stocker l'état d'un utilisateur
 	private static $connected = null;
+	
+	// Variable contenant toutes les données utilisateur
 	public static $me = array();
+	
+	// Variable membre contenant le profil de l'utilisateur	
 	public static $profile = array();
 	
 	
@@ -75,6 +81,7 @@ class users {
 	 * @brief		Renvoi l'utilisateur courant
 	 * @details		Charge l'utilisateur courant depuis la session et le renvoi
 	 * @return	Array	Renvoi un tableau contenant les informations utilisateur
+	 *
 	 */
 	 		
 	public static function getMe() {
@@ -90,6 +97,7 @@ class users {
 	 * @brief		Renvoi le profil de l'utilisateur courant
 	 * @details		Récupère le profil depuis la session ou sinon recharge le profil
 	 * @return	Array	Renvoi un tableau contenant les informations du profil de l'utilisateur
+	 *
 	 */
 	
 	public static function getProfile() {
@@ -147,7 +155,9 @@ class users {
 	 * @brief		Méthode permettant de verifier la connection
 	 * @details		Méthode qui verifie si l'utilisateur est actuellement connecté
 	 *				Sinon tente de se connecter via la méthode tryToConnect
+	 *
 	 * @return	bool	Renvoi true si bien connecté et false sinon
+	 *
 	 */
 
 	public static function isConnected() {

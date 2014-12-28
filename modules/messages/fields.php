@@ -1,5 +1,16 @@
 <?php
 
+/**
+ *	Fichier de configuration de champs pour le module Messages
+ *
+ * @brief		Definition du modele de Messages
+ * @details		Definition des champs de la table Messages
+ *
+ * @author		Artiom FEDOROV
+ *
+ */
+ 
+ 
 $fields['mobilephone']['typeSQL'] = 'VARCHAR(255)';
 $fields['mobilephone']['type'] = 'text';
 $fields['mobilephone']['label'] = 'Titre de la note';

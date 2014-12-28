@@ -1,26 +1,37 @@
 <?php
 
 /**
+ *	Fichier de configuration de champs pour le module interne Users
+ *
  * @brief		Definition du modele de users
  * @details		Definition des champs de la table interne users
- *				
+ *				Il s'agit ici d'une table interne qui ne doit pas etre alterée
+ *
  * @author		Artiom FEDOROV
+ *
  */
 
-$fields['email']['typeSQL'] = 'VARCHAR(255)';
-$fields['email']['type'] = 'text';
-$fields['email']['label'] = 'E-Mail';
 
-$fields['login']['typeSQL'] = 'VARCHAR(255)';
-$fields['login']['type'] = 'text';
-$fields['login']['label'] = 'Votre login';
+$fields = array(
+	'email' => array(
+						'typeSQL' => 'VARCHAR(255)',
+						'type' => 'text',
+						'label' => 'E-Mail'					
+						),
+						
+	'login' => array(
+						'typeSQL' => 'VARCHAR(255)',
+						'type' => 'text',
+						'label' => 'Votre login'					
+						),
 
-$fields['password']['typeSQL'] = 'VARCHAR(255)';
-$fields['password']['type'] = 'text';
-$fields['password']['label'] = 'Mot de passe';
+	'password' => array(
+						'typeSQL' => 'VARCHAR(255)',
+						'type' => 'text',
+						'label' => 'Mot de passe'			
+						),
 
-
-$fields['id_profil'] = array(
+	'id_profil' => array(
 						'typeSQL' => 'INT(11)',
 						'type' => 'join',
 						'label' => 'Profil join',
@@ -29,18 +40,18 @@ $fields['id_profil'] = array(
 							'field' => 'nom',
 							'type' => '1-n'
 							)				
-						);
+						),
 
-
-$fields['email_login'] = array(
+	'email_login' => array(
 						'typeSQL' => 'VARCHAR(255)',
 						'type' => 'text',
 						'label' => 'Email Login'					
-						);
-						
-						
-$fields['email_password'] = array(
+						),
+												
+	'email_password' => array(
 						'typeSQL' => 'VARCHAR(255)',
 						'type' => 'text',
 						'label' => 'Email Mot de passe'					
-						);						
+						)
+					);
+						

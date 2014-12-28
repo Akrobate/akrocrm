@@ -1,9 +1,18 @@
 <?php
 
+/**
+ *	Fichier de configuration de champs pour le module Contacts
+ *
+ * @brief		Definition du modele de Contacts
+ * @details		Definition des champs de la table Contacts
+ *
+ * @author		Artiom FEDOROV
+ *
+ */
+
 $fields['photo']['typeSQL'] = 'VARCHAR(255)';
 $fields['photo']['type'] = 'photourl';
 $fields['photo']['label'] = 'Portrait';
-
 
 $fields['nom']['typeSQL'] = 'VARCHAR(255)';
 $fields['nom']['type'] = 'text';
@@ -25,7 +34,6 @@ $fields['email']['typeSQL'] = 'VARCHAR(255)';
 $fields['email']['type'] = 'text';
 $fields['email']['label'] = 'E-Mail';
 
-
 $fields['adresse']['typeSQL'] = 'VARCHAR(255)';
 $fields['adresse']['type'] = 'text';
 $fields['adresse']['label'] = 'Adresse';
@@ -37,10 +45,6 @@ $fields['ville']['label'] = 'Ville';
 $fields['cp']['typeSQL'] = 'VARCHAR(255)';
 $fields['cp']['type'] = 'text';
 $fields['cp']['label'] = 'Code postal';
-
-
-
-
 
 $fields['id_entreprise']['type'] = 'join';
 $fields['id_entreprise']['typeSQL'] = 'INT(11)';

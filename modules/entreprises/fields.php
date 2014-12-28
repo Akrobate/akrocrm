@@ -1,5 +1,16 @@
 <?php
 
+/**
+ *	Fichier de configuration de champs pour le module Entreprises
+ *
+ * @brief		Definition du modele de Entreprises
+ * @details		Definition des champs de la table Entreprises
+ *
+ * @author		Artiom FEDOROV
+ *
+ */
+ 
+ 
 $fields['nom']['typeSQL'] = 'VARCHAR(255)';
 $fields['nom']['type'] = 'text';
 $fields['nom']['label'] = 'Nom';

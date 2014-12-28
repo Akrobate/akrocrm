@@ -91,15 +91,9 @@ class OrmNode extends DataAdapter {
 
 		sql::query($query);
 		$this->total = sql::nbrRows();
-		
-		// concat limits
 		$query .= " LIMIT  " . $this->start_limit . ", " . $this->nbr_limit;
-		// echo($query);
-		
 		sql::query($query);
 		$data_origin = sql::allFetchArray();
-		
-		// print_r ($data_origin);
 		$data_to = array();
 		foreach($data_origin as $data) {
 			$tmp = array();			
