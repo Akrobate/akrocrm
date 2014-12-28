@@ -1,12 +1,17 @@
 <?php
 
+
+/**
+ *	Classe qui represente un data Node
+ *	@author Artiom FEDOROV
+ *
+ */
+
 class OrmNode extends DataAdapter {
 
 	
 	public static $joins = array();
 	// @TODO Time a finaliser (format dentrée et icone up/down
-	//	public static $allowedfields = array('text', 'join', 'largetext', 'photourl', 'date', 'time');
-
 
 	public $filter;
 	
@@ -27,16 +32,6 @@ class OrmNode extends DataAdapter {
 	}
 
 
-	public static function getFieldsFor($module) {
-		if (!empty($module)){
-			if (file_exists("modules/$module/fields.php")) {
-				include("modules/$module/fields.php");					
-			} else if (file_exists(PATH_CORE_INTERNAL_MODULES . $module . "/fields.php")) {
-				include(PATH_CORE_INTERNAL_MODULES . $module . "/fields.php");
-			}
-			return $fields;
-		}
-	}
 	
 	public static function getAllObj() {
 		$query="SHOW TABLES";
@@ -52,8 +47,13 @@ class OrmNode extends DataAdapter {
 	}
 
 
-	
-
+	/**
+	 *	Methode de recuperation des datas
+	 *	@brief	Recupere la data depuis la table module	
+	 *	@param	module	Le nom du module (nom de la table)
+	 *	@param	id		L'id de l'enregistrement a recuperer
+	 *	@return	Array	Renvoi l'array de l'enregistrement
+	 */
 
 	public static function getData($module, $id) {
 		$query = "SELECT * FROM $module WHERE id = $id";
@@ -145,11 +145,20 @@ class OrmNode extends DataAdapter {
 		return $data;
 	}
 
+	
+	/**
+	 *	Methode generique de save de tout module
+	 *	@param	module	Le nom du module a sauvegarder (table de destination)
+	 *	@param	fields	Liste de champs a sauvegarder ex: Array('nom','prenom',etc..);
+	 *	@param	data	Array contenant les donnés a sauvegarder ex: Array ('nom' => Jean, 'prenom'=>'Pierre')
+	 *	@return	Array	Renvoi un array contenant msg qui dit s'il y a eut ajout ou edition
+	 *											id representant l'id de l'enregistrement conserné
+	 *											query	pour debug la chaine envoyé en mysql	
+	 */
+
+
 	public function upsert($module, $fields, $data) {
-
-		//print_r($data);
-
-
+	
 		$nbr_fields = count($fields);
 		$data_string_array = array();
 		$fields_string = implode(',',$fields);
@@ -160,17 +169,15 @@ class OrmNode extends DataAdapter {
 			} else {
 				$data_string_array[$field] = '""';		
 			}	
-		}
-	
+		}		
+			
 		if (isset($data['id']) && ($data['id'] != 0)) {
 		
 			foreach($fields as $field) {
-				$data_string .= $field . '=' .$data_string_array[$field] . ',';
+				$data_string .= $field . '=' . sql::escapeString( $data_string_array[$field] ) . ',';
 			}
 			$data_string = substr($data_string, 0, -1);
-		
 			$query = 'UPDATE ' . $module . ' SET '. $data_string . ' WHERE id=' . $data['id'];	
-//			sql::query(utf8_decode($query));
 			sql::query($query);		
 			$response['msg'] = 'EDITED';
 			$response['id'] = $data['id'];
@@ -179,8 +186,6 @@ class OrmNode extends DataAdapter {
 		} else {
 			$data_string = implode(',',$data_string_array);
 			$query = 'INSERT INTO ' . $module . ' ('.$fields_string.') VALUES ('. $data_string .');';
-			//sql::query(utf8_decode($query));
-			//echo($query);
 			sql::query($query);			
 			$lastid = sql::lastId();
 			$response['msg'] = 'ADDED';

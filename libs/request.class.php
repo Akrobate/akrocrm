@@ -1,5 +1,10 @@
 <?php
 
+/**
+ *	Classe qui s'occupe de la recupération des paramatetres
+ *	@author	Artiom FEDOROV
+ */
+
 class request {
 
 	public static function get($str) {
@@ -13,5 +18,3 @@ class request {
 	}
 
 }
-
-?>
