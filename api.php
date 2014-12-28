@@ -44,7 +44,7 @@
 	require_once(PATH_LIBS . "html.render.class.php");	
 	require_once(PATH_LIBS . "core.controller.class.php");
 	require_once(PATH_LIBS . "modulemanager.class.php");
-	require_once(PATH_LIBS . "datanode.class.php");
+	require_once(PATH_LIBS . "dataNode.class.php");
 	require_once(PATH_LIBS . "users.class.php");
 	require_once(PATH_LIBS . "phpmailer.class.php");
 	require_once(PATH_LIBS . "mymail.class.php");

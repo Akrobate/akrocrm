@@ -99,6 +99,14 @@ class sql {
 	}
 
 
+	/**
+	 * @brief		Methode qui echape les chaines de carractere
+	 * @details		Pour eviter l'injection sql toutes les données d'UI doivent etre echapés
+	 * @param	string	Chaine de carractere a echapper
+	 * @return	string	Chaine echappée
+	 *
+	 */
+
 	public static function escapeString($string) {
 		if (self::$connect_handler == null) {
 			self::connect();
@@ -106,19 +114,31 @@ class sql {
 		return mysql_real_escape_string($string);
 	}
 
+
+	/**
+	 * @brief		Methode qui echape les chaines de carractere d'un Array
+	 * @details		Pour eviter l'injection sql toutes les données d'UI doivent etre echapés
+	 * @param	Array	Tableau contenant des chaines de carractere a echapper
+	 * @return	Array	Tableau contenant les chaines echappées
+	 *
+	 */
+
 	public static function escapeArray($arr) {
-		
-		
 		foreach($arr as $key => $val) {
 			if (is_string($val)) {
-				$arr[$key] = mysql_real_escape_string($val);
+				$arr[$key] = self::escapeString($val);
 			}
 		}
-			
 		return $arr;
-			
 	}
 
+
+	/**
+	 * @brief		Methode qui permet la creation d'une table
+	 * @details		
+	 * @param	name	Nom de la table a creer
+	 * @param	params	Array contenant la description a suivre pour la creation de la table
+	 */
 
 	public static function createTable($name, $params = array()) {
 	
@@ -149,66 +169,31 @@ class sql {
 	}
 
 
-
-	public static function peopleTable($name, $params = array()) {
-		if (!empty($name)) {
-			  
-			  $data = "ed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam, eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt explicabo. Nemo enim ipsam voluptatem quia voluptas sit aspernatur aut odit aut fugit, sed quia consequuntur magni dolores eos qui ratione voluptatem sequi nesciunt. Neque porro quisquam est, qui dolorem ipsum quia dolor sit amet, consectetur, adipisci velit, sed quia non numquam eius modi tempora incidunt ut labore et dolore magnam aliquam quaerat voluptatem. Ut enim ad minima veniam, quis nostrum exercitationem ullam corporis suscipit laboriosam, nisi ut aliquid ex ea commodi consequatur? Quis autem vel eum iure reprehenderit qui in ea voluptate velit esse quam nihil molestiae consequatur, vel illum qui dolorem eum fugiat quo voluptas nulla pariatur";
-			  
-			  //dateee date NOT NULL,
-			  
-			  
-			  
-			  $ex_data = explode(" ", $data);
-			  $count_ex_data = count($ex_data);
-			  $count_ex_data_init = $count_ex_data - 3;
-			  
-			  $nb_val = rand(1,3);
-			  $cur_val = rand(1,$count_ex_data_init);
-			  
-			  $value = "";
-			  for($i = $cur_val; $i < $cur_val + $nb_val; $i++) {
-			  	$value .= $ex_data[$i] . " ";
-			  }
-			  
-			  $value = trim($value);
-			  
-			  $data = array();
-			 foreach( $params as $fieldname => $val ) {
-			 
-			 	  $nb_val = rand(1,3);
-				  $cur_val = rand(1,$count_ex_data_init);
-				  
-				  $value = "";
-				  for($i = $cur_val; $i < $cur_val + $nb_val; $i++) {
-				  	$value .= $ex_data[$i] . " ";
-				  }
-			 
-			 	if ($val['typeSQL'] == 'int') {
-					$data[$fieldname] = $value;
-			 	} else if ($val['type'] == 'date') {	 
-					$data[$fieldname] = $value;
-				} else {
-					$data[$fieldname] = $value;		
-				}
-			 }
-			  
-			return $data;
-		}
-	}
-
+	/**
+	 * @brief		Methode qui supprime une table
+	 * @details		Supprime la table name
+	 * @param	name	Nom de la table a supprimer
+	 */
 
 	public static function removeTable($name) {
 		if (!empty($name)) {
 			$query = "DROP TABLE IF EXISTS ". $name ." ;";
 			self::query($query);
-			//echo($query);
 			if (self::$display) {
 				echo("\n Table de travail : ". $name  ." Supprimée \n\n");
 			}
 		}
 	}
 
+
+	/**
+	 * @brief		Methode qui ajoute un champ
+	 * @details		Ajoute un champ fieldname a la table name de type sql type
+	 * @param	table	Nom de la table a alterer
+	 * @param	fieldname	Nom du champt a ajouter
+ 	 * @param	type	type SQL du champ
+ 	 *
+	 */
 
 	public static function addField($table, $fieldname, $type) {	
 		if (!empty($table)) {
@@ -222,6 +207,13 @@ class sql {
 	}
 	
 	
+	/**
+	 * @brief		Verifie l'existance d'une table
+	 * @details		Verifie si la table table exists renvoi true si oui else sinon
+	 * @param	table	nom de la table a verifier
+ 	 * @return	bool	Renvoi true si table existe false sinon
+ 	 *
+	 */
 	
 	public static function tableExists($table) {	
 		if (!empty($table)) {
@@ -237,39 +229,20 @@ class sql {
 		}
 	}
 
-	
+
+	/**
+	 * @brief		Permet d'afficher le debug
+	 * @details		Peut s'averer utile pour les methodes de build
+	 * @param	var	active desactive
+ 	 *
+	 */
 
 	public static function display($var) {	
 		self::$display = $var;
 	}
 
 
-	public static function peopleTableContacts($name, $params = array()) {
 
-		$str = file_get_contents("http://api.randomuser.me/");
-		$obj = json_decode($str);
-		$user = $obj->results[0]->user;
-		
-		if (!empty($name)) {
-			$value = "";  
-			$data = array();
-			foreach( $params as $fieldname => $val ) {
-				$data[$fieldname] = $value;		
-			}
-		}
-			  
-		$data['nom'] = ucfirst($user->name->last);
-		$data['prenom'] = ucfirst($user->name->first);		
-		$data['email'] = $user->email;
-		$data['adresse'] = $user->location->street;
-		$data['ville'] = $user->location->city;
-		$data['cp'] = $user->location->zip;
-		$data['telephone'] = $user->phone;  
-		
-		$data['photo'] = $user->picture->large;
-		
-		return $data;		
-	}
 
 }
 

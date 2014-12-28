@@ -39,7 +39,7 @@ if (in_array("--realcontacts", $argv) || 1) {
 		include($toinclude);
 			
 		for($j = 0; $j < $nbr_items_per_table + 100; $j++) {
-				$data = sql::peopleTableContacts($dir, $fields);
+				$data = DataNode::peopleTableContacts($dir, $fields);
 				$obj = new OrmNode();
 				$allFields = array_keys($fields);
 				$obj->upsert($dir, $allFields, $data);

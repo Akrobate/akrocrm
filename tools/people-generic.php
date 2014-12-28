@@ -40,7 +40,7 @@ if (in_array("--people", $argv)) {
 				include($toinclude);
 			
 				for($j = 0; $j < $nbr_items_per_table; $j++) {
-					$data = sql::peopleTable($dir, $fields);
+					$data = DataNode::peopleTable($dir, $fields);
 					$obj = new OrmNode();
 					$allFields = array_keys($fields);
 					$obj->upsert($dir, $allFields, $data);				
