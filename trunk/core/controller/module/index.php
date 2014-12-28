@@ -1,10 +1,21 @@
 <?php
 
+/**
+ *	Controlleur générique de visualisation de la liste de resultats
+ *	Permet la visualisation de toutes les données
+ *	De l'enregistrement
+ *
+ *	@author	Artiom FEDOROV
+ *	@date	2014
+ */
+
 class Module_Index extends CoreController {
 
+
 	/** 
-	 *	@brief	Méthode declanchant la récupération de résultats
-	 *	
+	 *	@brief	Méthode init qui recupere la liste de resultats
+	 *	@details	Affiche la liste de contenus
+	 *
 	 */
 
 	public function init() {
@@ -16,10 +27,8 @@ class Module_Index extends CoreController {
 		if (isset($views['view'][$module]['list']['filter'])){
 			$list->setFilter($views['view'][$module]['list']['filter']);
 		}
-		
 		CoreController::share($this, $list);
 		$listContent = $list->renderSTR();
-
 		$this->assign('listContent', $listContent);
 		
 	}

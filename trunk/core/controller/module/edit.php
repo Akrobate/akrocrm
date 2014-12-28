@@ -1,6 +1,20 @@
 <?php
 
+/**
+ *	Controlleur générique d'edition
+ *	Ce controlleur initialise la liste des champs
+ *	@author	Artiom FEDOROV
+ *
+ */
+ 
 class Module_Edit extends CoreController {
+
+
+	/**
+	 *	Methode qui prepare l'ensemble des champs 
+	 *	En mode edition
+	 *
+	 */
 
 	public function init() {
 		
@@ -17,6 +31,7 @@ class Module_Edit extends CoreController {
 			$id=0;
 		}
 		
+		// Assignation des variables pour le template
 		$this->assign('fields', $data);
 		$this->assign('id', $id);
 	}
